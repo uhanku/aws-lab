@@ -1,0 +1,41 @@
+{
+    "ImageId": "<AMI_ID>",
+    "InstanceType": "t3.micro",
+    "KeyName": "<KEY_PAIR_NAME>",
+    "InstanceMarketOptions": {
+        "MarketType": "spot"
+    },
+    "NetworkInterfaces": [
+        {
+            "AssociatePublicIpAddress": true,
+            "DeviceIndex": 0,
+            "Groups": [
+                "$SG_ID"
+            ]
+        }
+    ],
+    "CreditSpecification": {
+        "CpuCredits": "standard"
+    },
+    "TagSpecifications": [
+        {
+            "ResourceType": "instance",
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "<INSTANCE_NAME>"
+                }
+            ]
+        }
+    ],
+    "MetadataOptions": {
+        "HttpEndpoint": "enabled",
+        "HttpPutResponseHopLimit": 2,
+        "HttpTokens": "required"
+    },
+    "PrivateDnsNameOptions": {
+        "HostnameType": "ip-name",
+        "EnableResourceNameDnsARecord": true,
+        "EnableResourceNameDnsAAAARecord": false
+    }
+}
