@@ -2,7 +2,7 @@ import { EC2Client, RunInstancesCommand, DescribeInstancesCommand, TerminateInst
 
 const ec2 = new EC2Client({});
 
-const LAUNCH_TEMPLATE_ID = "lt-0aaf41a02690a3053";
+const LAUNCH_TEMPLATE_ID = "lt-0636a55f5dfe4e485";
 const INSTANCE_NAME = "t1-elb";
 
 export const handler = async (event) => {

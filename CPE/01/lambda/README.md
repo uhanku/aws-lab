@@ -1,4 +1,4 @@
-# LAMBDA
+# CREATE LAMBDA
 
 ```SH
 zip server.zip server.mjs
@@ -12,10 +12,18 @@ aws lambda create-function \
   --function-name ec2-t1-elb-scheduler \
   --runtime nodejs24.x \
   --role "$ROLE_ARN" \
-  --handler server.handler \
-  --zip-file fileb://server.zip \
+  --handler index.handler \
+  --zip-file fileb://index.zip \
   --timeout 30
 ```
+
+# OR DELETE LAMBDA
+```SH
+aws lambda delete-function \
+  --region eu-north-1 \
+  --function-name ec2-t1-elb-scheduler
+```
+
 
 # TEST LAMBDA
 
@@ -24,6 +32,7 @@ aws lambda create-function \
 ```SH
 aws lambda invoke \
   --function-name ec2-t1-elb-scheduler \
+  --cli-binary-format raw-in-base64-out \
   --payload '{"action":"start"}' \
   response-start.json
 ```
@@ -33,6 +42,7 @@ aws lambda invoke \
 ```SH
 aws lambda invoke \
   --function-name ec2-t1-elb-scheduler \
+  --cli-binary-format raw-in-base64-out \
   --payload '{"action":"terminate"}' \
-  response-terminate.json
+  response-stop.json
 ```
