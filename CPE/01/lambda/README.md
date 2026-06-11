@@ -1,7 +1,7 @@
 # CREATE LAMBDA
 
 ```SH
-zip server.zip server.mjs
+zip index.zip index.mjs
 
 ROLE_ARN=$(aws iam get-role \
   --role-name ec2-scheduler-lambda-role \
@@ -23,7 +23,6 @@ aws lambda delete-function \
   --region eu-north-1 \
   --function-name ec2-t1-elb-scheduler
 ```
-
 
 # TEST LAMBDA
 
