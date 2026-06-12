@@ -41,15 +41,23 @@ SCHEDULER_ROLE_ARN=$(aws iam get-role \
 
 aws scheduler create-schedule \
   --name start-t1-elb-at-0900 \
-  --schedule-expression "cron(0 9 * * ? *)" \
+  --schedule-expression "cron(0 20 ? * MON-THU,SAT-SUN *)" \
   --schedule-expression-timezone "Europe/Lisbon" \
   --flexible-time-window '{"Mode":"OFF"}' \
-  --target "Arn=$LAMBDA_ARN,RoleArn=$SCHEDULER_ROLE_ARN,Input={\"action\":\"start\"}"
+  --target "$(jq -n \
+    --arg arn "$LAMBDA_ARN" \
+    --arg role "$SCHEDULER_ROLE_ARN" \
+    --arg input '{"action":"start"}' \
+    '{Arn:$arn, RoleArn:$role, Input:$input}')"
 
 aws scheduler create-schedule \
   --name terminate-t1-elb-at-2000 \
-  --schedule-expression "cron(0 20 * * ? *)" \
+  --schedule-expression "cron(0 9 ? * MON-THU,SAT-SUN *)" \
   --schedule-expression-timezone "Europe/Lisbon" \
   --flexible-time-window '{"Mode":"OFF"}' \
-  --target "Arn=$LAMBDA_ARN,RoleArn=$SCHEDULER_ROLE_ARN,Input={\"action\":\"terminate\"}"
+  --target "$(jq -n \
+    --arg arn "$LAMBDA_ARN" \
+    --arg role "$SCHEDULER_ROLE_ARN" \
+    --arg input '{"action":"terminate"}' \
+    '{Arn:$arn, RoleArn:$role, Input:$input}')"
 ```

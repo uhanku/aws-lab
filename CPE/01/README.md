@@ -26,13 +26,13 @@
 
 ```mermaid
 flowchart TD
-    A[09:00 EventBridge Schedule] --> B[Lambda Function]
+    A[09:00 EventBridge Schedule<br/>Mon-Thu, Sat-Sun] --> B[Lambda Function]
     B --> C[Create EC2 Spot Instance]
 
     C --> D[EC2 Running]
     D --> E[Used for Study]
 
-    E --> F[20:00 EventBridge Schedule]
+    E --> F[20:00 EventBridge Schedule<br/>Mon-Thu, Sat-Sun]
     F --> G[Lambda Function]
     G --> H[Terminate EC2 Instance]
 
