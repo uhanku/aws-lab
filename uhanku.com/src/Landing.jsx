@@ -4,7 +4,7 @@ import './Landing.css'
 
 const SYMBOL_COUNT = 88
 
-function Landing() {
+function Landing({ onNavigate }) {
   const stageRef = useRef(null)
   const contentRef = useRef(null)
   const symbolsWrapRef = useRef(null)
@@ -100,6 +100,21 @@ function Landing() {
     }
   }, [])
 
+  const handleWordmarkClick = (event) => {
+    if (
+      event.button !== 0 ||
+      event.metaKey ||
+      event.altKey ||
+      event.ctrlKey ||
+      event.shiftKey
+    ) {
+      return
+    }
+
+    event.preventDefault()
+    onNavigate('/me')
+  }
+
   return (
     <main ref={stageRef} className="landing-stage">
       <div ref={symbolsWrapRef} className="symbols" aria-hidden="true">
@@ -110,7 +125,11 @@ function Landing() {
       <div className="grain" aria-hidden="true" />
 
       <section ref={contentRef} className="content" aria-label="Interactive uhanku wordmark">
-        <h1 className="name">uhanku</h1>
+        <h1 className="name">
+          <a className="name-link" href="/me" onClick={handleWordmarkClick}>
+            uhanku
+          </a>
+        </h1>
       </section>
     </main>
   )
