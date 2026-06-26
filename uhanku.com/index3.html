@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>uhanku</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <style>
+    :root {
+      --dark: #0b1423;
+      --light: #eef2f6;
+      --orange: #ff3d00;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--dark);
+      color: var(--light);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-synthesis: none;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+      cursor: crosshair;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      perspective: 1100px;
+    }
+
+    .stage {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 61, 0, .22), transparent 28rem),
+        linear-gradient(135deg, #0b1423 0%, #111f33 54%, #0b1423 100%);
+    }
+
+    .symbols {
+      position: absolute;
+      inset: -12vmax;
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      grid-auto-rows: 12vmax;
+      gap: 2.4vmax;
+      transform: rotate(-14deg) scale(1.08);
+      opacity: .95;
+      will-change: transform;
+    }
+
+    .symbol {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 999px;
+      border: 2px solid rgba(238, 242, 246, .14);
+      background: rgba(238, 242, 246, .045);
+      box-shadow: inset 0 0 0 1px rgba(238, 242, 246, .04);
+      will-change: transform, border-radius, background-color;
+    }
+
+    .symbol:nth-child(3n) {
+      border-radius: 34% 66% 34% 66% / 66% 34% 66% 34%;
+      background: rgba(255, 61, 0, .13);
+      border-color: rgba(255, 61, 0, .22);
+    }
+
+    .symbol:nth-child(4n) {
+      border-radius: 1.6rem;
+      transform: rotate(45deg);
+    }
+
+    .symbol:nth-child(5n) {
+      background: transparent;
+      border-color: rgba(238, 242, 246, .20);
+    }
+
+    .grain {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: .12;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      transform-style: preserve-3d;
+      will-change: transform;
+      text-align: center;
+      width: min(92vw, 82rem);
+      padding: clamp(1.5rem, 5vw, 4rem);
+      isolation: isolate;
+    }
+
+    .name {
+      margin: 0;
+      font-size: clamp(4.5rem, min(17vw, 28vh), 15rem);
+      line-height: .86;
+      letter-spacing: .055em;
+      font-weight: 950;
+      color: var(--light);
+      transform: translateZ(90px);
+      overflow-wrap: anywhere;
+      font-kerning: normal;
+      font-feature-settings: "kern" 1, "liga" 1;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, .18);
+      text-shadow:
+        .025em .025em 0 #d7dde5,
+        .05em .05em 0 #aeb8c4,
+        .075em .075em 0 #7f8b9b,
+        .1em .1em 0 #526071,
+        .13em .18em .18em rgba(0, 0, 0, .44),
+        -.08em -.06em .22em rgba(255, 61, 0, .22);
+      user-select: none;
+    }
+
+    @media (max-width: 620px) {
+      .name {
+        font-size: clamp(4rem, 22vw, 7.25rem);
+        line-height: .9;
+        letter-spacing: .035em;
+        text-shadow:
+          .02em .02em 0 #d7dde5,
+          .045em .045em 0 #aeb8c4,
+          .075em .075em 0 #667386,
+          .12em .16em .18em rgba(0, 0, 0, .46),
+          -.06em -.05em .2em rgba(255, 61, 0, .2);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="stage">
+    <div class="symbols" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+  </main>
+
+  <section class="content" aria-label="Interactive uhanku wordmark">
+    <h1 class="name">uhanku</h1>
+  </section>
+
+  <script>
+    const symbolsWrap = document.querySelector('.symbols');
+    const content = document.querySelector('.content');
+
+    const count = 88;
+    for (let i = 0; i < count; i++) {
+      const symbol = document.createElement('span');
+      symbol.className = 'symbol';
+      symbolsWrap.appendChild(symbol);
+    }
+
+    const symbols = gsap.utils.toArray('.symbol');
+
+    gsap.set(symbols, {
+      scale: () => gsap.utils.random(.45, 1.35),
+      rotation: () => gsap.utils.random(-35, 35),
+      opacity: () => gsap.utils.random(.35, .9)
+    });
+
+    gsap.to(symbols, {
+      y: 'random(-18, 18)',
+      x: 'random(-14, 14)',
+      rotation: '+=random(-10, 10)',
+      duration: 'random(4, 7)',
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+      stagger: { amount: 2.5, from: 'random' }
+    });
+
+
+    window.addEventListener('pointermove', (event) => {
+      const x = event.clientX;
+      const y = event.clientY;
+      const nx = (x / innerWidth - .5) * 2;
+      const ny = (y / innerHeight - .5) * 2;
+
+      document.documentElement.style.setProperty('--mx', `${x}px`);
+      document.documentElement.style.setProperty('--my', `${y}px`);
+
+
+      gsap.to(content, {
+        rotateY: nx * 12,
+        rotateX: -ny * 10,
+        x: nx * 16,
+        y: ny * 12,
+        duration: .7,
+        ease: 'power3.out'
+      });
+
+      gsap.to(symbolsWrap, {
+        x: -nx * 70,
+        y: -ny * 55,
+        rotate: -14 + nx * 2,
+        duration: 1.1,
+        ease: 'power3.out'
+      });
+
+      gsap.to(symbols, {
+        x: (i) => nx * gsap.utils.random(-22, 22),
+        y: (i) => ny * gsap.utils.random(-18, 18),
+        duration: 1,
+        ease: 'power3.out',
+        stagger: { amount: .25, from: 'center' }
+      });
+    });
+
+    window.addEventListener('pointerleave', () => {
+      gsap.to(content, { rotateX: 0, rotateY: 0, x: 0, y: 0, duration: 1.1, ease: 'elastic.out(1, .45)' });
+      gsap.to(symbolsWrap, { x: 0, y: 0, rotate: -14, duration: 1.2, ease: 'power3.out' });
+    });
+  </script>
+</body>
+
+</html>
