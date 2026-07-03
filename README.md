@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/icon.png" alt="AWS lab icon" width="96" />
+  <img src="assets/icon.png" alt="AWS lab icon" width="160" />
 </p>
 
 <p align="center"><strong>AWS LAB</strong></p>
