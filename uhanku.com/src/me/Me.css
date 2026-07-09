@@ -1,0 +1,171 @@
+.me-page-shell {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(180deg, rgba(9, 10, 22, 0.08) 0%, rgba(9, 10, 22, 0.18) 100%),
+    url('/me/bg.png') center center / cover no-repeat;
+}
+
+.me-page-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 12, 26, 0.08) 0%, rgba(10, 12, 26, 0.2) 100%),
+    radial-gradient(circle at 50% 64%, transparent 0 48%, rgba(0, 0, 0, 0.18) 100%);
+  pointer-events: none;
+}
+
+.me-card-stage {
+  position: relative;
+  z-index: 1;
+  width: min(84vw, 58rem);
+  height: min(74svh, 38rem);
+  display: grid;
+  place-items: center;
+  padding: clamp(0.75rem, 2vw, 1.5rem);
+  box-sizing: border-box;
+}
+
+.me-card-orb {
+  position: absolute;
+  width: min(35vw, 26rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(18px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.me-card-orb--left {
+  left: 3%;
+  top: 16%;
+  background: radial-gradient(circle, rgba(88, 128, 255, 0.18) 0%, rgba(88, 128, 255, 0) 72%);
+}
+
+.me-card-orb--right {
+  right: 4%;
+  bottom: 10%;
+  background: radial-gradient(circle, rgba(255, 177, 75, 0.14) 0%, rgba(255, 177, 75, 0) 72%);
+}
+
+.me-card-stack {
+  position: relative;
+  width: min(72vw, 44rem);
+  height: min(70svh, 32rem);
+}
+
+.me-card {
+  position: absolute;
+  margin: 0;
+  width: clamp(9rem, 12vw, 11.5rem);
+  aspect-ratio: 1086 / 1448;
+  transform-origin: center center;
+  transition:
+    filter 220ms ease,
+    opacity 220ms ease;
+  will-change: transform;
+}
+
+.me-card--left {
+  left: 3%;
+  top: 18%;
+  transform: rotate(-12deg) translateY(0.5rem);
+  z-index: 1;
+}
+
+.me-card--center {
+  left: 50%;
+  top: 8%;
+  transform: translateX(-50%) rotate(1deg);
+  z-index: 3;
+  width: clamp(10rem, 14vw, 13rem);
+}
+
+.me-card--right {
+  right: 3%;
+  top: 22%;
+  transform: rotate(11deg) translateY(1rem);
+  z-index: 2;
+}
+
+@media (min-width: 1025px) {
+  .me-card:hover {
+    z-index: 4;
+    filter: saturate(1.04) brightness(1.03);
+  }
+
+  .me-card--left:hover {
+    filter: saturate(1.04) brightness(1.03);
+  }
+
+  .me-card--center:hover {
+    filter: saturate(1.04) brightness(1.03);
+  }
+
+  .me-card--right:hover {
+    filter: saturate(1.04) brightness(1.03);
+  }
+}
+
+@media (max-width: 900px) {
+  .me-card-stage {
+    height: 100svh;
+    width: 100vw;
+    padding: 0.65rem;
+  }
+
+  .me-card-stack {
+    width: min(100%, 22rem);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .me-card {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    width: min(58vw, 12rem);
+    border-radius: clamp(1.05rem, 1.1vw, 1.4rem);
+    transform: none;
+  }
+
+  .me-card--center {
+    width: min(64vw, 12.5rem);
+  }
+
+  .me-card + .me-card {
+    margin-top: -2.8rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .me-card-stage {
+    padding: 0.75rem;
+  }
+
+  .me-card-stack {
+    width: min(100%, 16rem);
+    gap: 0;
+  }
+
+  .me-card {
+    width: min(60vw, 11rem);
+    border-radius: 1rem;
+  }
+
+  .me-card--center {
+    width: min(66vw, 11.5rem);
+  }
+
+  .me-card + .me-card {
+    margin-top: -2.4rem;
+  }
+}
