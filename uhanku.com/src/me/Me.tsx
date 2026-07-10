@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import "./Me.css";
 
-import chatBotOpenIcon from "./to-implement/assets/chat-bot-open-repo-icon.png";
-import docLlmIcon from "./to-implement/assets/doc-llm-repo-icon.png";
-import gptRunnerIcon from "./to-implement/assets/gpt-runner-repo-icon.png";
+import chatBotOpenIcon from "../assets/chat-bot-open-repo-icon.png";
+import docLlmIcon from "../assets/doc-llm-repo-icon.png";
+import gptRunnerIcon from "../assets/gpt-runner-repo-icon.png";
 
 type Project = {
   eyebrow: string;
