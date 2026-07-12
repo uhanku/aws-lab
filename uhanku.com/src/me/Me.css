@@ -206,8 +206,10 @@
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
   gap: clamp(16px, 2vw, 24px);
   width: 100%;
+  max-height: calc(100dvh - 2 * clamp(12px, 3vw, 48px));
 }
 
 @media (max-width: 780px) {
@@ -218,6 +220,8 @@
 
   .project-grid {
     grid-template-columns: 1fr;
+    grid-template-rows: none;
     gap: 10px;
+    max-height: none;
   }
 }

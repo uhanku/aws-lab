@@ -38,3 +38,4 @@ next-env.d.ts
 COMMANDS.md
 
 pre-commit-deploy.sh
+pre-push.sh
