@@ -67,6 +67,8 @@ const projects: Project[] = [
     tags: ["Docs", "Progress", "AI", "Lessons"],
     href: "/blog",
     cta: "Open blog",
+    icon: "/favicon.svg",
+    iconAlt: "Sandbox Icon",
     theme: "purple",
   },
 ];
