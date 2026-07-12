@@ -4,6 +4,7 @@ import "./Me.css";
 import chatBotOpenIcon from "../assets/chat-bot-open-repo-icon.png";
 import docLlmIcon from "../assets/doc-llm-repo-icon.png";
 import gptRunnerIcon from "../assets/gpt-runner-repo-icon.png";
+import ProjectCard, { type ProjectCardTheme } from "./ProjectCard";
 
 type Project = {
   eyebrow: string;
@@ -12,7 +13,7 @@ type Project = {
   tags: string[];
   href: string;
   cta: string;
-  accent: string;
+  theme: ProjectCardTheme;
   icon?: string;
   iconAlt?: string;
   external?: boolean;
@@ -27,7 +28,7 @@ const projects: Project[] = [
     tags: ["Next.js", "RAG", "PostgreSQL", "pgvector"],
     href: "https://github.com/uhanku/doc-llm",
     cta: "View repository",
-    accent: "doc-blue",
+    theme: "doc-blue",
     icon: docLlmIcon,
     iconAlt: "Doc LLM repository icon",
     external: true,
@@ -40,7 +41,7 @@ const projects: Project[] = [
     tags: ["Next.js", "PostgreSQL", "OpenAI", "Docker"],
     href: "https://github.com/uhanku/chat-bot-open",
     cta: "View repository",
-    accent: "chat-orange",
+    theme: "chat-orange",
     icon: chatBotOpenIcon,
     iconAlt: "Chat Bot Open repository icon",
     external: true,
@@ -53,7 +54,7 @@ const projects: Project[] = [
     tags: ["NestJS", "TypeScript", "MongoDB", "Docker"],
     href: "https://github.com/uhanku/gpt-runner",
     cta: "View repository",
-    accent: "runner-teal",
+    theme: "runner-teal",
     icon: gptRunnerIcon,
     iconAlt: "GPT Runner repository icon",
     external: true,
@@ -66,7 +67,7 @@ const projects: Project[] = [
     tags: ["Docs", "Progress", "AI", "Lessons"],
     href: "/blog",
     cta: "Open blog",
-    accent: "purple",
+    theme: "purple",
   },
 ];
 
@@ -105,46 +106,7 @@ export default function Me() {
         aria-label="Featured projects"
       >
         {projects.map((project) => (
-          <a
-            className={`project-card project-card--${project.accent}`}
-            href={project.href}
-            key={project.title}
-            rel={project.external ? "noreferrer" : undefined}
-            target={project.external ? "_blank" : undefined}
-          >
-            <div className="project-card__top">
-              <span className="project-card__eyebrow">{project.eyebrow}</span>
-              {project.icon ? (
-                <span className="project-card__icon">
-                  <img src={project.icon} alt={project.iconAlt} />
-                </span>
-              ) : (
-                <span className="project-card__blog-icon" aria-hidden="true">
-                  <span>⌁</span>
-                </span>
-              )}
-            </div>
-
-            <div className="project-card__header">
-              <h2>{project.title}</h2>
-              <span className="project-card__arrow" aria-hidden="true">
-                {project.external ? "↗" : "→"}
-              </span>
-            </div>
-
-            <p>{project.description}</p>
-
-            <ul
-              className="project-card__tags"
-              aria-label={`${project.title} tags`}
-            >
-              {project.tags.map((tag) => (
-                <li key={tag}>{tag}</li>
-              ))}
-            </ul>
-
-            <span className="project-card__cta">{project.cta}</span>
-          </a>
+          <ProjectCard key={project.title} {...project} />
         ))}
       </section>
     </main>
