@@ -1,4 +1,5 @@
 import { useEffect, type MouseEvent } from "react";
+import profileImage from "./assets/profile.png";
 import "./Landing.css";
 
 type LandingProps = {
@@ -103,7 +104,7 @@ function Landing({ onNavigate }: LandingProps) {
           <div className="landing-profile__avatar-wrap">
             <img
               className="landing-profile__avatar"
-              src="/profile.png"
+              src={profileImage}
               alt="Uhanku"
             />
             <span
