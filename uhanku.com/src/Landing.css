@@ -377,6 +377,7 @@ body.landing-profile-page #root {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-self: end;
   gap: clamp(8px, 1.3vw, 14px);
+
   min-height: 0;
 }
 
