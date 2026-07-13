@@ -1,0 +1,175 @@
+diff --git a/uhanku.com/src/Landing.css b/uhanku.com/src/Landing.css
+index 0706e43..3fb8d31 100644
+@@ -7,7 +7,11 @@
+ 
+ body.landing-profile-page {
+   overflow: hidden;
+-  background: var(--bg, var(--background));
++  background: color-mix(
++    in srgb,
++    var(--background, var(--bg, #090a0f)) 82%,
++    black 18%
++  );
+ }
+ 
+ body.landing-profile-page #root {
+@@ -16,16 +20,33 @@
+ }
+ 
+ .landing-profile {
+-  --landing-bg: var(--bg, var(--background));
++  --landing-bg: color-mix(
++    in srgb,
++    var(--background, var(--bg, #090a0f)) 82%,
++    black 18%
++  );
++  --landing-card: color-mix(
++    in srgb,
++    var(--card, #171a2d) 76%,
++    black 24%
++  );
++  --landing-cover: color-mix(
++    in srgb,
++    var(--card, #171a2d) 84%,
++    var(--accent, #c084fc) 16%
++  );
+   --landing-text: var(--text, var(--muted-foreground));
+   --landing-heading: var(--text-h, var(--foreground));
+-  --landing-border: var(--border);
++  --landing-border: color-mix(
++    in srgb,
++    var(--border, rgba(255, 255, 255, 0.14)) 72%,
++    transparent
++  );
+   --landing-available: #22c55e;
+   --landing-radius: calc(var(--radius, 0.625rem) * 3);
+-  --landing-shadow: var(
+-    --shadow,
+-    0 24px 80px color-mix(in srgb, var(--landing-heading) 12%, transparent)
+-  );
++  --landing-shadow:
++    0 34px 100px rgba(0, 0, 0, 0.58),
++    0 0 0 1px color-mix(in srgb, var(--landing-heading) 3%, transparent);
+ 
+   position: fixed;
+   inset: 0;
+@@ -53,22 +74,27 @@
+   pointer-events: none;
+   background:
+     radial-gradient(
+-      circle at 14% 10%,
+-      var(--accent-bg, color-mix(in srgb, var(--landing-heading) 8%, transparent)),
+-      transparent 33rem
++      circle at 14% 8%,
++      color-mix(in srgb, var(--accent, #c084fc) 11%, transparent),
++      transparent 31rem
+     ),
+     radial-gradient(
+-      circle at 88% 86%,
+-      color-mix(in srgb, var(--accent-border, var(--landing-border)) 18%, transparent),
+-      transparent 30rem
++      circle at 90% 92%,
++      color-mix(in srgb, var(--accent, #c084fc) 7%, transparent),
++      transparent 28rem
+     ),
+-    var(--landing-bg);
++    linear-gradient(
++      145deg,
++      color-mix(in srgb, var(--landing-bg) 94%, black 6%) 0%,
++      var(--landing-bg) 52%,
++      color-mix(in srgb, var(--landing-bg) 88%, var(--accent, #c084fc) 12%) 100%
++    );
+ }
+ 
+ .landing-profile__grid {
+   position: absolute;
+   inset: 0;
+-  opacity: 0.42;
++  opacity: 0.24;
+   background-image:
+     linear-gradient(
+       color-mix(in srgb, var(--landing-heading) 4%, transparent) 1px,
+@@ -122,7 +148,7 @@
+   overflow: hidden;
+   border: 1px solid var(--landing-border);
+   border-radius: var(--landing-radius);
+-  background: color-mix(in srgb, var(--landing-bg) 91%, var(--landing-heading) 9%);
++  background: var(--landing-card);
+   box-shadow: var(--landing-shadow);
+ }
+ 
+@@ -142,7 +168,7 @@
+       color-mix(in srgb, var(--accent-border, var(--landing-border)) 26%, transparent),
+       transparent 18rem
+     ),
+-    color-mix(in srgb, var(--landing-bg) 88%, var(--landing-heading) 12%);
++    var(--landing-cover);
+ }
+ 
+ .landing-profile__cover::after {
+@@ -190,11 +216,25 @@
+   font-weight: 760;
+   line-height: 0.76;
+   letter-spacing: -0.075em;
+-  opacity: 0.07;
+   white-space: nowrap;
+   user-select: none;
+ }
+ 
++.landing-profile__cover-copy span {
++  opacity: 0.065;
++}
++
++.landing-profile__cover-copy span:nth-child(2) {
++  color: color-mix(
++    in srgb,
++    var(--landing-heading) 72%,
++    var(--accent, #c084fc) 28%
++  );
++  opacity: 0.2;
++  text-shadow: 0 0 34px
++    color-mix(in srgb, var(--accent, #c084fc) 18%, transparent);
++}
++
+ .landing-profile__shape {
+   position: absolute;
+   display: block;
+@@ -281,7 +321,9 @@
+   aspect-ratio: 1;
+   border: 3px solid color-mix(in srgb, var(--landing-bg) 94%, var(--landing-heading) 6%);
+   border-radius: 50%;
+-  background: var(--accent-border, var(--landing-heading));
++  background: var(--landing-available);
++  box-shadow: 0 0 0 3px
++    color-mix(in srgb, var(--landing-available) 14%, transparent);
+ }
+ 
+ .landing-profile__identity {
+@@ -350,9 +392,10 @@
+   border-radius: calc(var(--radius, 0.625rem) * 1.55);
+   color: var(--landing-heading);
+   text-decoration: none;
+-  background: var(
+-    --social-bg,
+-    color-mix(in srgb, var(--landing-heading) 5%, transparent)
++  background: color-mix(
++    in srgb,
++    var(--landing-card) 88%,
++    var(--landing-heading) 12%
+   );
+   transition:
+     transform 160ms ease,
+@@ -363,9 +406,10 @@
+ .landing-profile__socials a:hover {
+   transform: translateY(-2px);
+   border-color: var(--accent-border, var(--landing-border));
+-  background: var(
+-    --accent-bg,
+-    color-mix(in srgb, var(--landing-heading) 8%, transparent)
++  background: color-mix(
++    in srgb,
++    var(--landing-card) 80%,
++    var(--accent, #c084fc) 20%
+   );
+ }
+ 
