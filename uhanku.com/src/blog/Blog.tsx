@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 
 import "./Blog.css";
 import { BlogLink } from "./components/BlogLink";
@@ -10,6 +10,74 @@ import { useDocumentMetadata } from "./useDocumentMetadata";
 interface BlogProps {
   onNavigate: Navigate;
   path: string;
+}
+
+let cachedBlogPosts: LoadedBlogPost[] | null = null;
+const cachedBlogPostsBySlug = new Map<string, LoadedBlogPost>();
+let blogPostsRequest: Promise<LoadedBlogPost[]> | null = null;
+const blogPostRequests = new Map<
+  string,
+  Promise<LoadedBlogPost | null>
+>();
+
+function rememberBlogPosts(posts: LoadedBlogPost[]) {
+  cachedBlogPosts = posts;
+
+  for (const post of posts) {
+    cachedBlogPostsBySlug.set(post.metadata.slug, post);
+  }
+
+  return posts;
+}
+
+function getCachedBlogPost(slug: string) {
+  return cachedBlogPostsBySlug.get(slug) ?? null;
+}
+
+function loadCachedBlogPosts() {
+  if (cachedBlogPosts) {
+    return Promise.resolve(cachedBlogPosts);
+  }
+
+  if (!blogPostsRequest) {
+    blogPostsRequest = loadBlogPosts()
+      .then(rememberBlogPosts)
+      .catch((reason: unknown) => {
+        blogPostsRequest = null;
+        throw reason;
+      });
+  }
+
+  return blogPostsRequest;
+}
+
+function loadCachedBlogPost(slug: string) {
+  const cachedPost = getCachedBlogPost(slug);
+
+  if (cachedPost) {
+    return Promise.resolve(cachedPost);
+  }
+
+  const existingRequest = blogPostRequests.get(slug);
+
+  if (existingRequest) {
+    return existingRequest;
+  }
+
+  const request = loadBlogPost(slug)
+    .then((post) => {
+      if (post) {
+        cachedBlogPostsBySlug.set(slug, post);
+      }
+
+      return post;
+    })
+    .finally(() => {
+      blogPostRequests.delete(slug);
+    });
+
+  blogPostRequests.set(slug, request);
+  return request;
 }
 
 function formatDate(value: string) {
@@ -37,9 +105,11 @@ function BlogHeader({ onNavigate }: { onNavigate: Navigate }) {
 }
 
 function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
-  const [posts, setPosts] = useState<BlogPostMetadata[]>([]);
+  const [posts, setPosts] = useState<BlogPostMetadata[]>(() =>
+    cachedBlogPosts?.map((post) => post.metadata) ?? [],
+  );
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(cachedBlogPosts === null);
 
   useDocumentMetadata({
     title: "Blog",
@@ -48,9 +118,13 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
   });
 
   useEffect(() => {
+    if (cachedBlogPosts) {
+      return;
+    }
+
     let active = true;
 
-    loadBlogPosts()
+    loadCachedBlogPosts()
       .then((loadedPosts) => {
         if (active) {
           setPosts(loadedPosts.map((post) => post.metadata));
@@ -118,21 +192,34 @@ function BlogPostPage({
   onNavigate: Navigate;
   slug: string;
 }) {
-  const [post, setPost] = useState<LoadedBlogPost | null>(null);
+  const [post, setPost] = useState<LoadedBlogPost | null>(() =>
+    getCachedBlogPost(slug),
+  );
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(
+    () => getCachedBlogPost(slug) === null,
+  );
   const mdxComponents = useMemo(
     () => createMdxComponents(onNavigate),
     [onNavigate],
   );
 
   useEffect(() => {
+    const cachedPost = getCachedBlogPost(slug);
+
+    if (cachedPost) {
+      setPost(cachedPost);
+      setError(null);
+      setLoading(false);
+      return;
+    }
+
     let active = true;
     setLoading(true);
     setError(null);
     setPost(null);
 
-    loadBlogPost(slug)
+    loadCachedBlogPost(slug)
       .then((loadedPost) => {
         if (!active) {
           return;
@@ -214,8 +301,25 @@ function BlogPostPage({
 }
 
 export default function Blog({ onNavigate, path }: BlogProps) {
-  useEffect(() => {
-    window.scrollTo({ top: 0 });
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const previousScrollbarGutter = root.style.getPropertyValue(
+      "scrollbar-gutter",
+    );
+
+    root.style.setProperty("scrollbar-gutter", "stable");
+
+    return () => {
+      if (previousScrollbarGutter) {
+        root.style.setProperty("scrollbar-gutter", previousScrollbarGutter);
+      } else {
+        root.style.removeProperty("scrollbar-gutter");
+      }
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [path]);
 
   const slug = path.startsWith("/blog/")
@@ -229,7 +333,7 @@ export default function Blog({ onNavigate, path }: BlogProps) {
       {path === "/blog" ? (
         <BlogIndex onNavigate={onNavigate} />
       ) : isSingleSegmentSlug ? (
-        <BlogPostPage onNavigate={onNavigate} slug={slug} />
+        <BlogPostPage key={slug} onNavigate={onNavigate} slug={slug} />
       ) : (
         <main className="blog-main blog-not-found">
           <p className="blog-eyebrow">404</p>
