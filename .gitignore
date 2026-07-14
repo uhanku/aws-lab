@@ -39,3 +39,4 @@ COMMANDS.md
 
 pre-commit-deploy.sh
 pre-push.sh
+*.patch
