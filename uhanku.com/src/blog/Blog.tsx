@@ -12,21 +12,16 @@ interface BlogProps {
   path: string;
 }
 
-let cachedBlogPosts: LoadedBlogPost[] | null = null;
+let cachedBlogPosts: BlogPostMetadata[] | null = null;
 const cachedBlogPostsBySlug = new Map<string, LoadedBlogPost>();
-let blogPostsRequest: Promise<LoadedBlogPost[]> | null = null;
+let blogPostsRequest: Promise<BlogPostMetadata[]> | null = null;
 const blogPostRequests = new Map<
   string,
   Promise<LoadedBlogPost | null>
 >();
 
-function rememberBlogPosts(posts: LoadedBlogPost[]) {
+function rememberBlogPosts(posts: BlogPostMetadata[]) {
   cachedBlogPosts = posts;
-
-  for (const post of posts) {
-    cachedBlogPostsBySlug.set(post.metadata.slug, post);
-  }
-
   return posts;
 }
 
@@ -106,7 +101,7 @@ function BlogHeader({ onNavigate }: { onNavigate: Navigate }) {
 
 function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
   const [posts, setPosts] = useState<BlogPostMetadata[]>(() =>
-    cachedBlogPosts?.map((post) => post.metadata) ?? [],
+    cachedBlogPosts ?? [],
   );
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(cachedBlogPosts === null);
@@ -127,7 +122,7 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
     loadCachedBlogPosts()
       .then((loadedPosts) => {
         if (active) {
-          setPosts(loadedPosts.map((post) => post.metadata));
+          setPosts(loadedPosts);
           setLoading(false);
         }
       })
