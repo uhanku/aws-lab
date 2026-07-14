@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars -- AWS CloudFront invokes the exported handler. */
 function handler(event) {
   let request = event.request;
   let uri = request.uri;

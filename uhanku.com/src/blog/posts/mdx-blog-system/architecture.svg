@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">MDX blog architecture</title>
+  <desc id="desc">MDX content flows through Vite into a React site deployed to S3 and CloudFront.</desc>
+  <rect width="1200" height="630" rx="36" fill="#08111f"/>
+  <g font-family="Arial, sans-serif" fill="#f4f7fb">
+    <text x="70" y="90" font-size="48" font-weight="700">uhanku.com MDX blog</text>
+    <text x="70" y="135" font-size="24" fill="#9eacbb">Content in folders. Presentation in React.</text>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="25" text-anchor="middle">
+    <rect x="70" y="240" width="220" height="130" rx="24" fill="#10243a" stroke="#66d9c7" stroke-width="3"/>
+    <text x="180" y="296" fill="#f4f7fb" font-weight="700">index.mdx</text>
+    <text x="180" y="334" fill="#9eacbb">content + metadata</text>
+
+    <path d="M310 305h100" stroke="#66d9c7" stroke-width="6" stroke-linecap="round"/>
+    <path d="m397 288 22 17-22 17" fill="none" stroke="#66d9c7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <rect x="430" y="240" width="220" height="130" rx="24" fill="#10243a" stroke="#66d9c7" stroke-width="3"/>
+    <text x="540" y="296" fill="#f4f7fb" font-weight="700">Vite + MDX</text>
+    <text x="540" y="334" fill="#9eacbb">compile + bundle</text>
+
+    <path d="M670 305h100" stroke="#66d9c7" stroke-width="6" stroke-linecap="round"/>
+    <path d="m757 288 22 17-22 17" fill="none" stroke="#66d9c7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <rect x="790" y="240" width="220" height="130" rx="24" fill="#10243a" stroke="#66d9c7" stroke-width="3"/>
+    <text x="900" y="296" fill="#f4f7fb" font-weight="700">React</text>
+    <text x="900" y="334" fill="#9eacbb">layout + routing + UI</text>
+  </g>
+  <g font-family="Arial, sans-serif" text-anchor="middle">
+    <rect x="335" y="455" width="530" height="92" rx="24" fill="#66d9c7"/>
+    <text x="600" y="512" font-size="28" font-weight="700" fill="#04110f">S3 + CloudFront → /blog/project-name</text>
+  </g>
+</svg>

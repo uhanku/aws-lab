@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import Landing from './Landing'
 
 const Me = lazy(() => import('./me/Me'))
+const Blog = lazy(() => import('./blog/Blog'))
 
 function RouteFallback() {
   return <main style={{ minHeight: '100vh' }}>Loading...</main>
@@ -22,7 +23,7 @@ function App() {
     }
   }, [])
 
-  const navigate = (nextPath) => {
+  const navigate = (nextPath: string) => {
     const normalizedPath = nextPath.replace(/\/+$/, '') || '/'
 
     if (normalizedPath === path) {
@@ -33,9 +34,17 @@ function App() {
     setPath(normalizedPath)
   }
 
+  const isBlogPath = path === '/blog' || path.startsWith('/blog/')
+
   return (
     <Suspense fallback={<RouteFallback />}>
-      {path === '/me' ? <Me /> : <Landing onNavigate={navigate} />}
+      {path === '/me' ? (
+        <Me />
+      ) : isBlogPath ? (
+        <Blog path={path} onNavigate={navigate} />
+      ) : (
+        <Landing onNavigate={navigate} />
+      )}
     </Suspense>
   )
 }

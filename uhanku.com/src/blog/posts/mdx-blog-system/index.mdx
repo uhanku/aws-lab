@@ -1,0 +1,49 @@
+import architecture from "./architecture.svg";
+
+export const metadata = {
+  title: "Building an MDX blog inside a Vite React site",
+  date: "2026-07-14",
+  description:
+    "How content folders, MDX modules, React components, and Vite routing work together on uhanku.com.",
+  slug: "mdx-blog-system",
+  tags: ["React", "MDX", "Vite", "AWS"],
+  cover: architecture,
+};
+
+This post is loaded from its own folder and automatically mapped to
+`/blog/mdx-blog-system`.
+
+<img src={architecture} alt="MDX blog architecture" />
+
+<Callout title="Folder-to-route convention" type="success">
+  The directory name and `metadata.slug` intentionally match. The content loader
+  validates this during development and builds.
+</Callout>
+
+## Embedded React components
+
+MDX is still compiled as React, so an article can contain interactive UI rather
+than being limited to static Markdown.
+
+<CounterDemo />
+
+## Local assets
+
+Images and other files can stay next to the article. Importing an asset lets
+Vite fingerprint and publish it under the generated `dist/assets` directory.
+
+<Gallery
+  images={[
+    {
+      src: architecture,
+      alt: "Diagram of the React, MDX, Vite, S3, and CloudFront flow",
+      caption:
+        "The same local SVG rendered through the reusable Gallery component.",
+    },
+  ]}
+/>
+
+## Publishing another post
+
+Create a new folder under `src/blog/posts`, add an `index.mdx`, export its
+metadata, and run the normal Vite build. No route registry needs to be edited.
