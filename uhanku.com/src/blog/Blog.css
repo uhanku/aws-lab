@@ -116,6 +116,26 @@
   border-color: color-mix(in srgb, var(--blog-accent) 55%, transparent);
 }
 
+.blog-card--disabled {
+  opacity: 0.62;
+  cursor: not-allowed;
+}
+
+.blog-card--disabled:hover {
+  transform: none;
+  border-color: var(--blog-border);
+}
+
+.blog-card-status {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--blog-accent);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .blog-card time,
 .blog-article-header time {
   color: var(--blog-muted);

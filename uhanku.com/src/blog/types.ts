@@ -8,6 +8,7 @@ export interface BlogPostMetadata {
   tags?: string[];
   cover?: string;
   draft?: boolean;
+  toRelease?: boolean;
 }
 
 export interface BlogPostModule {

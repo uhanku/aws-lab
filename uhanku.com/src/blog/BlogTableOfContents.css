@@ -1,0 +1,122 @@
+.blog-main--post {
+  width: min(1120px, calc(100% - 40px));
+}
+
+.blog-article {
+  display: grid;
+  grid-template-columns: minmax(180px, 220px) minmax(0, 760px);
+  column-gap: clamp(32px, 4vw, 56px);
+  align-items: start;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+.blog-back-link,
+.blog-article-header,
+.blog-prose {
+  grid-column: 2;
+}
+
+.blog-back-link {
+  grid-row: 1;
+}
+
+.blog-article-header {
+  grid-row: 2;
+}
+
+.blog-prose {
+  grid-row: 3;
+  min-width: 0;
+}
+
+.blog-table-of-contents {
+  position: sticky;
+  top: 112px;
+  grid-column: 1;
+  grid-row: 3;
+  align-self: start;
+  max-height: calc(100vh - 136px);
+  padding: 2px 0 2px 18px;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-left: 1px solid var(--blog-border);
+  scrollbar-width: thin;
+}
+
+.blog-table-of-contents-title {
+  margin: 0 0 16px;
+  color: var(--blog-accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.blog-table-of-contents ol {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.blog-table-of-contents-item--level-3 {
+  padding-left: 14px;
+}
+
+.blog-table-of-contents a {
+  display: block;
+  color: var(--blog-muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  text-decoration: none;
+  text-underline-offset: 4px;
+  transition: color 140ms ease, transform 140ms ease;
+}
+
+.blog-table-of-contents a:hover {
+  color: var(--blog-accent);
+  transform: translateX(3px);
+}
+
+.blog-table-of-contents a:focus-visible {
+  border-radius: 4px;
+  outline: 2px solid var(--blog-accent);
+  outline-offset: 4px;
+}
+
+.blog-prose h2[id],
+.blog-prose h3[id] {
+  scroll-margin-top: 112px;
+}
+
+@media (max-width: 1120px) {
+  .blog-main--post {
+    width: min(860px, calc(100% - 40px));
+  }
+
+  .blog-article {
+    display: block;
+    max-width: 760px;
+  }
+
+  .blog-table-of-contents {
+    position: static;
+    max-height: none;
+    padding: 20px 22px;
+    margin: 0 0 40px;
+    overflow: visible;
+    overflow-x: hidden;
+    border: 1px solid var(--blog-border);
+    border-radius: 14px;
+    background: var(--blog-panel);
+  }
+}
+
+@media (max-width: 640px) {
+  .blog-main--post {
+    width: min(100% - 28px, 860px);
+  }
+}

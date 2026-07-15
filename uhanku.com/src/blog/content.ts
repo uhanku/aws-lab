@@ -122,8 +122,6 @@ export async function loadBlogPost(slug: string) {
 
 export async function loadBlogPosts() {
   return [...postMetadata]
-    .filter((metadata) => import.meta.env.DEV || !metadata.draft)
-    .sort(
-      (left, right) => Date.parse(right.date) - Date.parse(left.date),
-    );
+    .filter((metadata) => !metadata.draft)
+    .sort((left, right) => Date.parse(right.date) - Date.parse(left.date));
 }

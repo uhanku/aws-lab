@@ -1,6 +1,7 @@
-import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import "./Blog.css";
+import "./BlogTableOfContents.css";
 import { BlogLink } from "./components/BlogLink";
 import { createMdxComponents } from "./components/mdxComponents";
 import { loadBlogPost, loadBlogPosts } from "./content";
@@ -10,6 +11,24 @@ import { useDocumentMetadata } from "./useDocumentMetadata";
 interface BlogProps {
   onNavigate: Navigate;
   path: string;
+}
+
+interface TableOfContentsItem {
+  id: string;
+  label: string;
+  level: 2 | 3;
+}
+
+function createHeadingId(value: string) {
+  return (
+    value
+      .trim()
+      .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "section"
+  );
 }
 
 let cachedBlogPosts: BlogPostMetadata[] | null = null;
@@ -23,7 +42,13 @@ function rememberBlogPosts(posts: BlogPostMetadata[]) {
 }
 
 function getCachedBlogPost(slug: string) {
-  return cachedBlogPostsBySlug.get(slug) ?? null;
+  const post = cachedBlogPostsBySlug.get(slug);
+
+  if (!post || post.metadata.draft || post.metadata.toRelease) {
+    return null;
+  }
+
+  return post;
 }
 
 function loadCachedBlogPosts() {
@@ -140,12 +165,9 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
   return (
     <main className="blog-main">
       <section className="blog-intro">
-        <p className="blog-eyebrow">BUILDING IN PUBLIC</p>
-        <h1>Updates</h1>
-        <p>
-          Technical write-ups, experiments, decisions, and lessons from the
-          projects I build.
-        </p>
+        <p className="blog-eyebrow">BLOG</p>
+        <h1>Last Updates</h1>
+        <p>Just me thinking and doing things...</p>
       </section>
 
       {loading ? <p className="blog-status">Loading posts...</p> : null}
@@ -154,23 +176,43 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
       {!loading && !error ? (
         <section className="blog-list" aria-label="Blog posts">
           {posts.map((post) => (
-            <article className="blog-card" key={post.slug}>
-              <BlogLink
-                className="blog-card-link"
-                onNavigate={onNavigate}
-                to={`/blog/${post.slug}`}
-              >
-                <time dateTime={post.date}>{formatDate(post.date)}</time>
-                <h2>{post.title}</h2>
-                <p>{post.description}</p>
-                {post.tags?.length ? (
-                  <ul className="blog-tags" aria-label="Post tags">
-                    {post.tags.map((tag) => (
-                      <li key={tag}>{tag}</li>
-                    ))}
-                  </ul>
-                ) : null}
-              </BlogLink>
+            <article
+              className={`blog-card${post.toRelease ? " blog-card--disabled" : ""}`}
+              key={post.slug}
+              aria-disabled={post.toRelease || undefined}
+            >
+              {post.toRelease ? (
+                <div className="blog-card-link">
+                  <span className="blog-card-status">Coming soon</span>
+                  <time dateTime={post.date}>{formatDate(post.date)}</time>
+                  <h2>{post.title}</h2>
+                  <p>{post.description}</p>
+                  {post.tags?.length ? (
+                    <ul className="blog-tags" aria-label="Post tags">
+                      {post.tags.map((tag) => (
+                        <li key={tag}>{tag}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              ) : (
+                <BlogLink
+                  className="blog-card-link"
+                  onNavigate={onNavigate}
+                  to={`/blog/${post.slug}`}
+                >
+                  <time dateTime={post.date}>{formatDate(post.date)}</time>
+                  <h2>{post.title}</h2>
+                  <p>{post.description}</p>
+                  {post.tags?.length ? (
+                    <ul className="blog-tags" aria-label="Post tags">
+                      {post.tags.map((tag) => (
+                        <li key={tag}>{tag}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </BlogLink>
+              )}
             </article>
           ))}
         </section>
@@ -193,6 +235,10 @@ function BlogPostPage({
   const [loading, setLoading] = useState(
     () => getCachedBlogPost(slug) === null,
   );
+  const [tableOfContents, setTableOfContents] = useState<TableOfContentsItem[]>(
+    [],
+  );
+  const articleRef = useRef<HTMLElement>(null);
   const mdxComponents = useMemo(
     () => createMdxComponents(onNavigate),
     [onNavigate],
@@ -221,7 +267,8 @@ function BlogPostPage({
 
         if (
           !loadedPost ||
-          (!import.meta.env.DEV && loadedPost.metadata.draft)
+          loadedPost.metadata.draft ||
+          loadedPost.metadata.toRelease
         ) {
           setError("Post not found");
         } else {
@@ -243,6 +290,51 @@ function BlogPostPage({
       active = false;
     };
   }, [slug]);
+
+  useLayoutEffect(() => {
+    const article = articleRef.current;
+
+    if (!post || !article) {
+      setTableOfContents([]);
+      return;
+    }
+
+    const usedIds = new Set<string>();
+    const duplicateCounts = new Map<string, number>();
+    const items: TableOfContentsItem[] = [];
+    const headings = article.querySelectorAll<HTMLHeadingElement>(
+      ".blog-prose h2, .blog-prose h3",
+    );
+
+    headings.forEach((heading) => {
+      const label = heading.textContent?.trim();
+
+      if (!label) {
+        return;
+      }
+
+      const baseId = heading.id.trim() || createHeadingId(label);
+      let id = baseId;
+      let duplicateNumber = duplicateCounts.get(baseId) ?? 1;
+
+      while (usedIds.has(id)) {
+        duplicateNumber += 1;
+        id = `${baseId}-${duplicateNumber}`;
+      }
+
+      duplicateCounts.set(baseId, duplicateNumber);
+      usedIds.add(id);
+      heading.id = id;
+
+      items.push({
+        id,
+        label,
+        level: heading.tagName === "H3" ? 3 : 2,
+      });
+    });
+
+    setTableOfContents(items);
+  }, [post, slug]);
 
   useDocumentMetadata({
     title: post?.metadata.title ?? "Blog post",
@@ -272,8 +364,8 @@ function BlogPostPage({
   const Content = post.default;
 
   return (
-    <main className="blog-main">
-      <article className="blog-article">
+    <main className="blog-main blog-main--post">
+      <article className="blog-article" ref={articleRef}>
         <BlogLink className="blog-back-link" onNavigate={onNavigate} to="/blog">
           ← All posts
         </BlogLink>
@@ -285,6 +377,30 @@ function BlogPostPage({
           <h1>{post.metadata.title}</h1>
           <p>{post.metadata.description}</p>
         </header>
+
+        {tableOfContents.length ? (
+          <nav
+            className="blog-table-of-contents"
+            aria-labelledby="blog-table-of-contents-title"
+          >
+            <p
+              className="blog-table-of-contents-title"
+              id="blog-table-of-contents-title"
+            >
+              On this page
+            </p>
+            <ol>
+              {tableOfContents.map((item) => (
+                <li
+                  className={`blog-table-of-contents-item blog-table-of-contents-item--level-${item.level}`}
+                  key={item.id}
+                >
+                  <a href={`#${item.id}`}>{item.label}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        ) : null}
 
         <div className="blog-prose">
           <Content components={mdxComponents} />
