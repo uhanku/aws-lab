@@ -39,5 +39,6 @@ COMMANDS.md
 
 pre-commit-deploy.sh
 pre-push.sh
+deploy.sh
 *.patch
 uhanku.com/dist

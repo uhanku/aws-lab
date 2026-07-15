@@ -455,11 +455,17 @@ body.landing-profile-page #root {
 .landing-profile__footer {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr);
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 1.28fr);
   align-items: center;
   gap: clamp(14px, 2vw, 24px);
   padding-top: clamp(12px, 2vh, 20px);
   border-top: 1px solid var(--landing-border);
+}
+
+.landing-profile__ctas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(8px, 1vw, 12px);
 }
 
 .landing-profile__status {
@@ -585,6 +591,10 @@ body.landing-profile-page #root {
     grid-template-columns: 1fr;
     gap: 10px;
     padding-top: 10px;
+  }
+
+  .landing-profile__ctas {
+    grid-template-columns: 1fr;
   }
 
   .landing-profile__status {

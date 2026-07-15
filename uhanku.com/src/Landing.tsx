@@ -47,7 +47,10 @@ function Landing({ onNavigate }: LandingProps) {
     };
   }, []);
 
-  const handleExplore = (event: MouseEvent<HTMLAnchorElement>) => {
+  const handleNavigate = (
+    event: MouseEvent<HTMLAnchorElement>,
+    path: string,
+  ) => {
     if (
       event.button !== 0 ||
       event.metaKey ||
@@ -59,7 +62,7 @@ function Landing({ onNavigate }: LandingProps) {
     }
 
     event.preventDefault();
-    onNavigate("/me");
+    onNavigate(path);
   };
 
   return (
@@ -153,14 +156,24 @@ function Landing({ onNavigate }: LandingProps) {
               Open to trying new ideas
             </div>
 
-            <a
-              className="landing-profile__cta"
-              href="/me"
-              onClick={handleExplore}
-            >
-              <span>Explore my projects</span>
-              <ArrowUpRight />
-            </a>
+            <div className="landing-profile__ctas">
+              <a
+                className="landing-profile__cta"
+                href="/me"
+                onClick={(event) => handleNavigate(event, "/me")}
+              >
+                <span>Explore my projects</span>
+                <ArrowUpRight />
+              </a>
+              <a
+                className="landing-profile__cta"
+                href="/blog"
+                onClick={(event) => handleNavigate(event, "/blog")}
+              >
+                <span>Read my blog</span>
+                <ArrowUpRight />
+              </a>
+            </div>
           </div>
         </div>
       </section>
