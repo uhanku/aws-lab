@@ -15,10 +15,7 @@ interface BlogProps {
 let cachedBlogPosts: BlogPostMetadata[] | null = null;
 const cachedBlogPostsBySlug = new Map<string, LoadedBlogPost>();
 let blogPostsRequest: Promise<BlogPostMetadata[]> | null = null;
-const blogPostRequests = new Map<
-  string,
-  Promise<LoadedBlogPost | null>
->();
+const blogPostRequests = new Map<string, Promise<LoadedBlogPost | null>>();
 
 function rememberBlogPosts(posts: BlogPostMetadata[]) {
   cachedBlogPosts = posts;
@@ -100,8 +97,8 @@ function BlogHeader({ onNavigate }: { onNavigate: Navigate }) {
 }
 
 function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
-  const [posts, setPosts] = useState<BlogPostMetadata[]>(() =>
-    cachedBlogPosts ?? [],
+  const [posts, setPosts] = useState<BlogPostMetadata[]>(
+    () => cachedBlogPosts ?? [],
   );
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(cachedBlogPosts === null);
@@ -158,20 +155,22 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
         <section className="blog-list" aria-label="Blog posts">
           {posts.map((post) => (
             <article className="blog-card" key={post.slug}>
-              <time dateTime={post.date}>{formatDate(post.date)}</time>
-              <h2>
-                <BlogLink onNavigate={onNavigate} to={`/blog/${post.slug}`}>
-                  {post.title}
-                </BlogLink>
-              </h2>
-              <p>{post.description}</p>
-              {post.tags?.length ? (
-                <ul className="blog-tags" aria-label="Post tags">
-                  {post.tags.map((tag) => (
-                    <li key={tag}>{tag}</li>
-                  ))}
-                </ul>
-              ) : null}
+              <BlogLink
+                className="blog-card-link"
+                onNavigate={onNavigate}
+                to={`/blog/${post.slug}`}
+              >
+                <time dateTime={post.date}>{formatDate(post.date)}</time>
+                <h2>{post.title}</h2>
+                <p>{post.description}</p>
+                {post.tags?.length ? (
+                  <ul className="blog-tags" aria-label="Post tags">
+                    {post.tags.map((tag) => (
+                      <li key={tag}>{tag}</li>
+                    ))}
+                  </ul>
+                ) : null}
+              </BlogLink>
             </article>
           ))}
         </section>
@@ -298,9 +297,8 @@ function BlogPostPage({
 export default function Blog({ onNavigate, path }: BlogProps) {
   useLayoutEffect(() => {
     const root = document.documentElement;
-    const previousScrollbarGutter = root.style.getPropertyValue(
-      "scrollbar-gutter",
-    );
+    const previousScrollbarGutter =
+      root.style.getPropertyValue("scrollbar-gutter");
 
     root.style.setProperty("scrollbar-gutter", "stable");
 

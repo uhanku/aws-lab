@@ -1,0 +1,22 @@
+export { metadata } from "./metadata";
+
+## Why?
+
+...
+
+## Why redirect it to WWwW?
+
+(apex ALIAS) uhanku.com ALIAS dj5vtdholg3tg.cloudfront.net:
+uhanku.com
+→ Namecheap ALIAS resolution
+→ possibly MCI/PHX CloudFront POP
+→ CloudFront Function returns 301
+→ browser requests www.uhanku.com
+→ normal CNAME resolution
+→ Lisbon CloudFront POP
+
+www.uhanku.com. CNAME dj5vtdholg3tg.cloudfront.net.
+Your device
+→ Portuguese/local recursive resolver
+→ CloudFront DNS
+→ CloudFront chooses Lisbon
