@@ -2,6 +2,14 @@ import { useEffect, type MouseEvent } from "react";
 const profileImage = "/profile.png";
 import "./Landing.css";
 import LandingArcade from "./LandingArcade";
+import {
+  LandingBadge,
+  LandingButton,
+  LandingCard,
+  LandingIconLink,
+  LandingSectionLabel,
+  LandingStatusPill,
+} from "@/components/landing/LandingPrimitives";
 
 type LandingProps = {
   onNavigate: (path: string) => void;
@@ -80,8 +88,8 @@ function Landing({ onNavigate }: LandingProps) {
       >
         <header className="landing-profile__cover">
           <div className="landing-profile__cover-meta">
-            <span>UHANKU.COM</span>
-            <span>PROFILE / 01</span>
+            <LandingSectionLabel>UHANKU.COM</LandingSectionLabel>
+            <LandingSectionLabel>PROFILE / 01</LandingSectionLabel>
           </div>
 
           <div className="landing-profile__cover-copy" aria-hidden="true">
@@ -118,9 +126,7 @@ function Landing({ onNavigate }: LandingProps) {
           </div>
 
           <div className="landing-profile__identity">
-            <p className="landing-profile__eyebrow">
-              Fullstack Dev · Open source
-            </p>
+            <LandingBadge>Fullstack Dev · Open source</LandingBadge>
             <h1 id="profile-name">Uhanku</h1>
             <p className="landing-profile__handle">@uhanku</p>
           </div>
@@ -135,45 +141,38 @@ function Landing({ onNavigate }: LandingProps) {
             aria-label="Social profiles"
           >
             {socialLinks.map((social) => (
-              <a
+              <LandingIconLink
                 key={social.label}
                 href={social.href}
                 target="_blank"
                 rel="noreferrer"
-                aria-label={`${social.label}: ${social.handle}`}
-              >
-                <span>
-                  <strong>{social.label}</strong>
-                  <small>{social.handle}</small>
-                </span>
-                <ArrowUpRight />
-              </a>
+                label={social.label}
+                handle={social.handle}
+                icon={<ArrowUpRight />}
+              />
             ))}
           </nav>
 
           <div className="landing-profile__footer">
-            <div className="landing-profile__status">
-              <span aria-hidden="true" />
+            <LandingStatusPill className="landing-profile__status">
               Open to trying new ideas
-            </div>
+            </LandingStatusPill>
 
             <div className="landing-profile__ctas">
-              <a
-                className="landing-profile__cta"
+              <LandingButton
                 href="/me"
                 onClick={(event) => handleNavigate(event, "/me")}
               >
                 <span>Explore my projects</span>
                 <ArrowUpRight />
-              </a>
-              <a
-                className="landing-profile__cta"
+              </LandingButton>
+              <LandingButton
                 href="/blog"
                 onClick={(event) => handleNavigate(event, "/blog")}
               >
                 <span>Read my blog</span>
                 <ArrowUpRight />
-              </a>
+              </LandingButton>
             </div>
           </div>
         </div>
