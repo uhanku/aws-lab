@@ -1,6 +1,7 @@
 import { useEffect, type MouseEvent } from "react";
-import profileImage from "./assets/profile.png";
+const profileImage = "/profile.png";
 import "./Landing.css";
+import LandingArcade from "./LandingArcade";
 
 type LandingProps = {
   onNavigate: (path: string) => void;
@@ -65,7 +66,7 @@ function Landing({ onNavigate }: LandingProps) {
     onNavigate(path);
   };
 
-  return (
+  const renderProfileLanding = () => (
     <main className="landing-profile">
       <div className="landing-profile__backdrop" aria-hidden="true">
         <span className="landing-profile__orb landing-profile__orb--one" />
@@ -178,6 +179,12 @@ function Landing({ onNavigate }: LandingProps) {
         </div>
       </section>
     </main>
+  );
+
+  return import.meta.env.VITE_LANDING_STYLE === "profile" ? (
+    renderProfileLanding()
+  ) : (
+    <LandingArcade onNavigate={onNavigate} />
   );
 }
 

@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import "./Me.css";
 
-import chatBotOpenIcon from "../assets/chat-bot-open-repo-icon.png";
-import docLlmIcon from "../assets/doc-llm-repo-icon.png";
-import gptRunnerIcon from "../assets/gpt-runner-repo-icon.png";
+const chatBotOpenIcon = "/chat-bot-open-repo-icon.png";
+const docLlmIcon = "/doc-llm-repo-icon.png";
+const gptRunnerIcon = "/gpt-runner-repo-icon.png";
 import ProjectCard, { type ProjectCardTheme } from "./ProjectCard";
 
 type Project = {

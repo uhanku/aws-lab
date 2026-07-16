@@ -84,6 +84,7 @@
   color: var(--blog-muted);
   font-size: 1.1rem;
   line-height: 1.75;
+  margin-top: 10px;
 }
 
 .blog-list {
