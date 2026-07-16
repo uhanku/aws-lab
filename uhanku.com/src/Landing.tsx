@@ -1,5 +1,5 @@
 import { useEffect, type MouseEvent } from "react";
-const profileImage = "/profile.png";
+import profileImage from "./assets/profile.png";
 import "./Landing.css";
 import LandingArcade from "./LandingArcade";
 import {

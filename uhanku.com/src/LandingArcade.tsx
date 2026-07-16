@@ -1,6 +1,5 @@
 import type { MouseEvent } from "react";
-
-const catImage = "/uhanku-cat.png";
+import catImage from "./assets/uhanku-cat.png";
 
 import "./LandingArcade.css";
 

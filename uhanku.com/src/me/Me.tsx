@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, type CSSProperties } from "react";
+import chatBotOpenIcon from "../assets/chat-bot-open-repo-icon.png";
+import docLlmIcon from "../assets/doc-llm-repo-icon.png";
+import faviconIcon from "../assets/favicon.svg";
+import gptRunnerIcon from "../assets/gpt-runner-repo-icon.png";
+import meBackground from "../assets/bg.png";
 import "./Me.css";
 
-const chatBotOpenIcon = "/chat-bot-open-repo-icon.png";
-const docLlmIcon = "/doc-llm-repo-icon.png";
-const gptRunnerIcon = "/gpt-runner-repo-icon.png";
 import ProjectCard, { type ProjectCardTheme } from "./ProjectCard";
 
 type Project = {
@@ -67,7 +69,7 @@ const projects: Project[] = [
     tags: ["Docs", "Progress", "AI", "Lessons"],
     href: "/blog",
     cta: "Open blog",
-    icon: "/favicon.svg",
+    icon: faviconIcon,
     iconAlt: "Sandbox Icon",
     theme: "purple",
   },
@@ -90,7 +92,10 @@ export default function Me() {
   }, []);
 
   return (
-    <main className="me-page">
+    <main
+      className="me-page"
+      style={{ "--me-background": `url(${meBackground})` } as CSSProperties}
+    >
       <div className="me-page__background" aria-hidden="true" />
       <div className="me-page__particles" aria-hidden="true">
         {particleAccents.flatMap((accent) =>

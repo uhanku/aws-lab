@@ -45,7 +45,7 @@
       transparent 28rem
     ),
     linear-gradient(180deg, rgba(6, 7, 18, 0.9), rgba(6, 7, 18, 0.95)),
-    url("/me/bg.png") center / cover no-repeat;
+    var(--me-background) center / cover no-repeat;
 }
 
 .me-page__particles {
