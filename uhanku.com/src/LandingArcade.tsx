@@ -76,10 +76,10 @@ function LandingArcade({ onNavigate }: LandingArcadeProps) {
             <div className="arcade-quest">
               <span>ACTIVE QUEST</span>
               <b>Build useful AI tools</b>
-              <div aria-label="Quest progress: 78 percent">
+              <div aria-label="Quest progress: 7 percent">
                 <i />
               </div>
-              <small>78% · permanently in progress</small>
+              <small>7% · permanently in progress</small>
             </div>
           </aside>
 
