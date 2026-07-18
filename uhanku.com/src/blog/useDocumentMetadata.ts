@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 interface DocumentMetadata {
   title: string;
@@ -8,7 +8,7 @@ interface DocumentMetadata {
 }
 
 function upsertMeta(
-  attribute: "name" | "property",
+  attribute: 'name' | 'property',
   key: string,
   content: string,
 ) {
@@ -18,7 +18,7 @@ function upsertMeta(
   const created = !element;
 
   if (!element) {
-    element = document.createElement("meta");
+    element = document.createElement('meta');
     element.setAttribute(attribute, key);
     document.head.appendChild(element);
   }
@@ -42,8 +42,8 @@ function upsertCanonical(url: string) {
   const created = !element;
 
   if (!element) {
-    element = document.createElement("link");
-    element.rel = "canonical";
+    element = document.createElement('link');
+    element.rel = 'canonical';
     document.head.appendChild(element);
   }
 
@@ -73,19 +73,19 @@ export function useDocumentMetadata({
     document.title = cleanTitle;
 
     const restore = [
-      upsertMeta("name", "description", description),
-      upsertMeta("property", "og:title", cleanTitle),
-      upsertMeta("property", "og:description", description),
-      upsertMeta("property", "og:type", "article"),
-      upsertMeta("property", "og:url", canonicalUrl),
+      upsertMeta('name', 'description', description),
+      upsertMeta('property', 'og:title', cleanTitle),
+      upsertMeta('property', 'og:description', description),
+      upsertMeta('property', 'og:type', 'article'),
+      upsertMeta('property', 'og:url', canonicalUrl),
       upsertCanonical(canonicalUrl),
     ];
 
     if (image) {
       restore.push(
         upsertMeta(
-          "property",
-          "og:image",
+          'property',
+          'og:image',
           new URL(image, window.location.origin).toString(),
         ),
       );

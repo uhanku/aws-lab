@@ -1,10 +1,10 @@
-import type { BlogPostMetadata, BlogPostModule, LoadedBlogPost } from "./types";
+import type { BlogPostMetadata, BlogPostModule, LoadedBlogPost } from './types';
 
-type BlogPostMetadataModule = Pick<BlogPostModule, "metadata">;
+type BlogPostMetadataModule = Pick<BlogPostModule, 'metadata'>;
 
-const postLoaders = import.meta.glob<BlogPostModule>("./posts/*/index.mdx");
+const postLoaders = import.meta.glob<BlogPostModule>('./posts/*/index.mdx');
 const metadataModules = import.meta.glob<BlogPostMetadataModule>(
-  "./posts/*/metadata.ts",
+  './posts/*/metadata.ts',
   { eager: true },
 );
 
@@ -21,10 +21,10 @@ function assertValidMetadata(
   metadata: BlogPostMetadata,
 ) {
   const requiredFields: Array<keyof BlogPostMetadata> = [
-    "title",
-    "date",
-    "description",
-    "slug",
+    'title',
+    'date',
+    'description',
+    'slug',
   ];
 
   for (const field of requiredFields) {
@@ -44,10 +44,7 @@ function assertValidMetadata(
   }
 }
 
-function loadMetadataEntry(
-  sourcePath: string,
-  module: BlogPostMetadataModule,
-) {
+function loadMetadataEntry(sourcePath: string, module: BlogPostMetadataModule) {
   const folderSlug = slugFromSourcePath(sourcePath);
 
   if (!folderSlug) {

@@ -73,7 +73,9 @@
   line-height: 1.45;
   text-decoration: none;
   text-underline-offset: 4px;
-  transition: color 140ms ease, transform 140ms ease;
+  transition:
+    color 140ms ease,
+    transform 140ms ease;
 }
 
 .blog-table-of-contents a:hover {

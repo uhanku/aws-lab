@@ -1,6 +1,6 @@
-import type { AnchorHTMLAttributes, MouseEvent, ReactNode } from "react";
+import type { AnchorHTMLAttributes, MouseEvent, ReactNode } from 'react';
 
-import type { Navigate } from "../types";
+import type { Navigate } from '../types';
 
 interface BlogLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   children: ReactNode;

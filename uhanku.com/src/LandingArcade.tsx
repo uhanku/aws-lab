@@ -1,13 +1,13 @@
-import type { MouseEvent } from "react";
-import catImage from "./assets/uhanku-cat.png";
+import type { MouseEvent } from 'react';
+import catImage from './assets/uhanku-cat.png';
 
-import "./LandingArcade.css";
+import './LandingArcade.css';
 
 type LandingArcadeProps = {
   onNavigate: (path: string) => void;
 };
 
-type InternalRoute = "/me" | "/blog";
+type InternalRoute = '/me' | '/blog';
 
 function LandingArcade({ onNavigate }: LandingArcadeProps) {
   const handleInternalRoute =
@@ -57,7 +57,7 @@ function LandingArcade({ onNavigate }: LandingArcadeProps) {
                 PROFILE
                 <i aria-hidden="true">↗</i>
               </a>
-              <a href="/blog" onClick={handleInternalRoute("/blog")}>
+              <a href="/blog" onClick={handleInternalRoute('/blog')}>
                 <span>02</span>
                 BUILD LOG
                 <i aria-hidden="true">↗</i>

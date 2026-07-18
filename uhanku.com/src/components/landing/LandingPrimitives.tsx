@@ -2,39 +2,39 @@ import type {
   AnchorHTMLAttributes,
   ButtonHTMLAttributes,
   ReactNode,
-} from "react";
-import { cn } from "@/lib/utils";
-import "./LandingPrimitives.css";
+} from 'react';
+import { cn } from '@/lib/utils';
+import './LandingPrimitives.css';
 
 type BaseProps = { className?: string; children?: ReactNode };
 
 type LandingButtonProps =
   | (BaseProps &
-      (AnchorHTMLAttributes<HTMLAnchorElement> & { href: string; as?: "a" }))
-  | (ButtonHTMLAttributes<HTMLButtonElement> & { as: "button" });
+      (AnchorHTMLAttributes<HTMLAnchorElement> & { href: string; as?: 'a' }))
+  | (ButtonHTMLAttributes<HTMLButtonElement> & { as: 'button' });
 
 export function LandingButton({
   className,
   children,
   ...props
 }: LandingButtonProps) {
-  return props.as === "button" ? (
-    <button className={cn("landing-button", className)} {...props}>
+  return props.as === 'button' ? (
+    <button className={cn('landing-button', className)} {...props}>
       {children}
     </button>
   ) : (
-    <a className={cn("landing-button", className)} {...props}>
+    <a className={cn('landing-button', className)} {...props}>
       {children}
     </a>
   );
 }
 
 export function LandingBadge({ className, children }: BaseProps) {
-  return <span className={cn("landing-badge", className)}>{children}</span>;
+  return <span className={cn('landing-badge', className)}>{children}</span>;
 }
 
 export function LandingCard({ className, children }: BaseProps) {
-  return <div className={cn("landing-card", className)}>{children}</div>;
+  return <div className={cn('landing-card', className)}>{children}</div>;
 }
 
 type LandingIconLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -53,7 +53,7 @@ export function LandingIconLink({
 }: LandingIconLinkProps) {
   return (
     <a
-      className={cn("landing-icon-link", className)}
+      className={cn('landing-icon-link', className)}
       aria-label={handle ? `${label}: ${handle}` : label}
       {...props}
     >
@@ -73,7 +73,7 @@ export function LandingIconLink({
 
 export function LandingStatusPill({ className, children }: BaseProps) {
   return (
-    <span className={cn("landing-status-pill", className)}>
+    <span className={cn('landing-status-pill', className)}>
       <span className="green-dot" aria-hidden="true" />
       {children}
     </span>
@@ -82,6 +82,6 @@ export function LandingStatusPill({ className, children }: BaseProps) {
 
 export function LandingSectionLabel({ className, children }: BaseProps) {
   return (
-    <span className={cn("landing-section-label", className)}>{children}</span>
+    <span className={cn('landing-section-label', className)}>{children}</span>
   );
 }

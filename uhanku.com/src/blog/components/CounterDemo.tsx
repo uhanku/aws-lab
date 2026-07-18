@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export function CounterDemo() {
   const [count, setCount] = useState(0);
@@ -7,7 +7,7 @@ export function CounterDemo() {
     <div className="blog-demo">
       <p>Interactive React component embedded inside MDX.</p>
       <button type="button" onClick={() => setCount((value) => value + 1)}>
-        Clicked {count} {count === 1 ? "time" : "times"}
+        Clicked {count} {count === 1 ? 'time' : 'times'}
       </button>
     </div>
   );

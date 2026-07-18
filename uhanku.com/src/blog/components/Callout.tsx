@@ -1,12 +1,12 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 interface CalloutProps {
   children: ReactNode;
   title?: string;
-  type?: "info" | "success" | "warning";
+  type?: 'info' | 'success' | 'warning';
 }
 
-export function Callout({ children, title, type = "info" }: CalloutProps) {
+export function Callout({ children, title, type = 'info' }: CalloutProps) {
   return (
     <aside className={`blog-callout blog-callout--${type}`}>
       {title ? <strong>{title}</strong> : null}

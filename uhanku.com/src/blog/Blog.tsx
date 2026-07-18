@@ -1,14 +1,14 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import "./Blog.css";
-import "./BlogTableOfContents.css";
-import "./inspiration/index.css";
-import { BlogLink } from "./components/BlogLink";
-import { BlogPostCard } from "./components/BlogPostCard";
-import { createMdxComponents } from "./components/mdxComponents";
-import { loadBlogPost, loadBlogPosts } from "./content";
-import type { BlogPostMetadata, LoadedBlogPost, Navigate } from "./types";
-import { useDocumentMetadata } from "./useDocumentMetadata";
+import './Blog.css';
+import './BlogTableOfContents.css';
+import './inspiration/index.css';
+import { BlogLink } from './components/BlogLink';
+import { BlogPostCard } from './components/BlogPostCard';
+import { createMdxComponents } from './components/mdxComponents';
+import { loadBlogPost, loadBlogPosts } from './content';
+import type { BlogPostMetadata, LoadedBlogPost, Navigate } from './types';
+import { useDocumentMetadata } from './useDocumentMetadata';
 
 interface BlogProps {
   onNavigate: Navigate;
@@ -26,16 +26,16 @@ function createHeadingId(value: string) {
     value
       .trim()
       .toLowerCase()
-      .normalize("NFKD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "") || "section"
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'section'
   );
 }
 
 function formatDate(value: string) {
-  return new Intl.DateTimeFormat("en-GB", {
-    dateStyle: "long",
+  return new Intl.DateTimeFormat('en-GB', {
+    dateStyle: 'long',
   }).format(new Date(`${value}T00:00:00`));
 }
 
@@ -135,9 +135,9 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
   const [loading, setLoading] = useState(cachedBlogPosts === null);
 
   useDocumentMetadata({
-    title: "Blog",
-    description: "Projects, experiments, and notes from Vinicius Silva.",
-    path: "/blog",
+    title: 'Blog',
+    description: 'Projects, experiments, and notes from Vinicius Silva.',
+    path: '/blog',
   });
 
   useEffect(() => {
@@ -157,7 +157,7 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
       .catch((reason: unknown) => {
         if (active) {
           setError(
-            reason instanceof Error ? reason.message : "Unable to load posts",
+            reason instanceof Error ? reason.message : 'Unable to load posts',
           );
           setLoading(false);
         }
@@ -187,7 +187,7 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
           <span className="green-dot" aria-hidden="true" />
           <span>Latest entries</span>
         </div>
-        <span>{String(posts.length).padStart(2, "0")} POSTS</span>
+        <span>{String(posts.length).padStart(2, '0')} POSTS</span>
       </div>
 
       {loading ? <p className="blog-status">Loading posts...</p> : null}
@@ -283,7 +283,7 @@ function BlogPostPage({
           loadedPost.metadata.draft ||
           loadedPost.metadata.toRelease
         ) {
-          setError("Post not found");
+          setError('Post not found');
         } else {
           setPost(loadedPost);
         }
@@ -293,7 +293,7 @@ function BlogPostPage({
       .catch((reason: unknown) => {
         if (active) {
           setError(
-            reason instanceof Error ? reason.message : "Unable to load post",
+            reason instanceof Error ? reason.message : 'Unable to load post',
           );
           setLoading(false);
         }
@@ -316,7 +316,7 @@ function BlogPostPage({
     const duplicateCounts = new Map<string, number>();
     const items: TableOfContentsItem[] = [];
     const headings = article.querySelectorAll<HTMLHeadingElement>(
-      ".blog-prose h2, .blog-prose h3",
+      '.blog-prose h2, .blog-prose h3',
     );
 
     headings.forEach((heading) => {
@@ -342,7 +342,7 @@ function BlogPostPage({
       items.push({
         id,
         label,
-        level: heading.tagName === "H3" ? 3 : 2,
+        level: heading.tagName === 'H3' ? 3 : 2,
       });
     });
 
@@ -350,9 +350,9 @@ function BlogPostPage({
   }, [post, slug]);
 
   useDocumentMetadata({
-    title: post?.metadata.title ?? "Blog post",
+    title: post?.metadata.title ?? 'Blog post',
     description:
-      post?.metadata.description ?? "A project note from Vinicius Silva.",
+      post?.metadata.description ?? 'A project note from Vinicius Silva.',
     path: `/blog/${slug}`,
     image: post?.metadata.cover,
   });
@@ -431,27 +431,27 @@ export default function Blog({ onNavigate, path }: BlogProps) {
   useLayoutEffect(() => {
     const root = document.documentElement;
     const previousScrollbarGutter =
-      root.style.getPropertyValue("scrollbar-gutter");
+      root.style.getPropertyValue('scrollbar-gutter');
 
-    root.style.setProperty("scrollbar-gutter", "stable");
+    root.style.setProperty('scrollbar-gutter', 'stable');
 
     return () => {
       if (previousScrollbarGutter) {
-        root.style.setProperty("scrollbar-gutter", previousScrollbarGutter);
+        root.style.setProperty('scrollbar-gutter', previousScrollbarGutter);
       } else {
-        root.style.removeProperty("scrollbar-gutter");
+        root.style.removeProperty('scrollbar-gutter');
       }
     };
   }, []);
 
   useLayoutEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [path]);
 
-  const slug = path.startsWith("/blog/")
-    ? decodeURIComponent(path.slice("/blog/".length))
+  const slug = path.startsWith('/blog/')
+    ? decodeURIComponent(path.slice('/blog/'.length))
     : null;
-  const isSingleSegmentSlug = slug && !slug.includes("/");
+  const isSingleSegmentSlug = slug && !slug.includes('/');
 
   return (
     <div className="blog-page">
@@ -464,7 +464,10 @@ export default function Blog({ onNavigate, path }: BlogProps) {
         <header className="blog-cover">
           <BlogHeader onNavigate={onNavigate} />
           <div className="blog-cover__meta" aria-hidden="true">
-            <span><span className="green-dot" aria-hidden="true" />JOURNAL / 02</span>
+            <span>
+              <span className="green-dot" aria-hidden="true" />
+              JOURNAL / 02
+            </span>
             <span>BUILDING IN PUBLIC</span>
           </div>
           <div className="blog-cover__copy" aria-hidden="true">
@@ -476,7 +479,7 @@ export default function Blog({ onNavigate, path }: BlogProps) {
           <span className="blog-shape blog-shape--two" aria-hidden="true" />
           <span className="blog-shape blog-shape--three" aria-hidden="true" />
         </header>
-        {path === "/blog" ? (
+        {path === '/blog' ? (
           <BlogIndex onNavigate={onNavigate} />
         ) : isSingleSegmentSlug ? (
           <BlogPostPage key={slug} onNavigate={onNavigate} slug={slug} />

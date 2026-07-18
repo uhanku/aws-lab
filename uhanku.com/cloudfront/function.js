@@ -4,11 +4,11 @@ function handler(event) {
   let uri = request.uri;
 
   // Let real files pass through: /assets/app.js, /favicon.ico, etc.
-  if (uri.includes(".")) {
+  if (uri.includes('.')) {
     return request;
   }
 
   // Send React routes like /me, /dashboard, /settings to index.html
-  request.uri = "/index.html";
+  request.uri = '/index.html';
   return request;
 }

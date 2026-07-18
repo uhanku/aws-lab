@@ -1,11 +1,8 @@
-import type { ReactNode } from "react";
-import styles from "./ProjectCard.module.css";
+import type { ReactNode } from 'react';
+import styles from './ProjectCard.module.css';
 
 export type ProjectCardTheme =
-  | "doc-blue"
-  | "chat-orange"
-  | "runner-teal"
-  | "purple";
+  'doc-blue' | 'chat-orange' | 'runner-teal' | 'purple';
 
 export type ProjectCardProps = {
   eyebrow: string;
@@ -36,8 +33,8 @@ export default function ProjectCard({
     <a
       className={`${styles.card} ${styles[`theme--${theme}`]}`}
       href={href}
-      rel={external ? "noreferrer" : undefined}
-      target={external ? "_blank" : undefined}
+      rel={external ? 'noreferrer' : undefined}
+      target={external ? '_blank' : undefined}
     >
       <div className={styles.top}>
         <span className={styles.eyebrow}>{eyebrow}</span>
@@ -55,7 +52,7 @@ export default function ProjectCard({
       <div className={styles.header}>
         <h2>{title}</h2>
         <span className={styles.arrow} aria-hidden="true">
-          {external ? "↗" : "→"}
+          {external ? '↗' : '→'}
         </span>
       </div>
 

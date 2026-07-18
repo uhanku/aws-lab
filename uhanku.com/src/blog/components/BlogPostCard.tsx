@@ -1,6 +1,6 @@
-import type { CSSProperties } from "react";
-import type { BlogPostMetadata, Navigate } from "../types";
-import { BlogLink } from "./BlogLink";
+import type { CSSProperties } from 'react';
+import type { BlogPostMetadata, Navigate } from '../types';
+import { BlogLink } from './BlogLink';
 
 interface BlogPostCardProps {
   post: BlogPostMetadata;
@@ -9,10 +9,10 @@ interface BlogPostCardProps {
 }
 
 function formatDate(value: string) {
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
+  return new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
   })
     .format(new Date(`${value}T00:00:00`))
     .toUpperCase();
@@ -32,13 +32,13 @@ export function BlogPostCard({ post, index, onNavigate }: BlogPostCardProps) {
       <div className="post-card__topline">
         <time dateTime={post.date}>{formatDate(post.date)}</time>
         <span className="post-number">
-          {String(index + 1).padStart(2, "0")}
+          {String(index + 1).padStart(2, '0')}
         </span>
       </div>
 
       <div className="post-card__body">
         <p className="post-card__type">
-          {post.toRelease ? "COMING SOON" : "JOURNAL ENTRY"}
+          {post.toRelease ? 'COMING SOON' : 'JOURNAL ENTRY'}
         </p>
         <h2>{post.title}</h2>
         <p>{post.description}</p>
@@ -63,10 +63,10 @@ export function BlogPostCard({ post, index, onNavigate }: BlogPostCardProps) {
 
   return (
     <article
-      className={`post-card blog-reveal blog-reveal--card${post.toRelease ? " post-card--disabled" : ""}`}
+      className={`post-card blog-reveal blog-reveal--card${post.toRelease ? ' post-card--disabled' : ''}`}
       style={
         {
-          "--blog-reveal-delay": `${Math.min(index, 7) * 0.1}s`,
+          '--blog-reveal-delay': `${Math.min(index, 7) * 0.1}s`,
         } as CSSProperties
       }
     >

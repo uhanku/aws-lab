@@ -1,4 +1,4 @@
-import type { ComponentType, ElementType } from "react";
+import type { ComponentType, ElementType } from 'react';
 
 export interface BlogPostMetadata {
   title: string;
