@@ -39,7 +39,7 @@ function LandingArcade({ onNavigate }: LandingArcadeProps) {
           UHANKU_OS
         </a>
         <div className="arcade-header__status">
-          <i aria-hidden="true" />
+          <span className="green-dot" aria-hidden="true" />
           SYSTEM ONLINE
         </div>
         <div className="arcade-header__clock">

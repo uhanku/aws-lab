@@ -184,7 +184,7 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
 
       <div className="blog-section-heading">
         <div>
-          <span className="status-dot" aria-hidden="true" />
+          <span className="green-dot" aria-hidden="true" />
           <span>Latest entries</span>
         </div>
         <span>{String(posts.length).padStart(2, "0")} POSTS</span>
@@ -208,7 +208,7 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
 
       <footer className="blog-footer">
         <div className="blog-footer__status">
-          <span aria-hidden="true" />
+          <span className="green-dot" aria-hidden="true" />
           Building, testing, and documenting the mess.
         </div>
         <div className="blog-footer__links">
@@ -464,7 +464,7 @@ export default function Blog({ onNavigate, path }: BlogProps) {
         <header className="blog-cover">
           <BlogHeader onNavigate={onNavigate} />
           <div className="blog-cover__meta" aria-hidden="true">
-            <span>JOURNAL / 02</span>
+            <span><span className="green-dot" aria-hidden="true" />JOURNAL / 02</span>
             <span>BUILDING IN PUBLIC</span>
           </div>
           <div className="blog-cover__copy" aria-hidden="true">

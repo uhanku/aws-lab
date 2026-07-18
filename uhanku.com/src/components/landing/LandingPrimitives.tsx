@@ -74,7 +74,7 @@ export function LandingIconLink({
 export function LandingStatusPill({ className, children }: BaseProps) {
   return (
     <span className={cn("landing-status-pill", className)}>
-      <span aria-hidden="true" />
+      <span className="green-dot" aria-hidden="true" />
       {children}
     </span>
   );

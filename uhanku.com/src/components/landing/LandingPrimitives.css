@@ -62,13 +62,6 @@
   padding: 7px 11px;
   font-size: var(--text-sm);
 }
-.landing-status-pill > span {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 12px #22c55e;
-}
 .landing-section-label {
   padding: 5px 8px;
   border: 0;

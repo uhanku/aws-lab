@@ -143,15 +143,6 @@
   letter-spacing: 0.12em;
 }
 
-.arcade-header__status i {
-  width: 7px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--arcade-acid);
-  box-shadow: 0 0 12px var(--arcade-acid);
-  animation: arcade-pulse 1.8s ease-in-out infinite;
-}
-
 .arcade-header__clock {
   justify-self: end;
   color: #8f899f;

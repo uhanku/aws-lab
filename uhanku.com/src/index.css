@@ -107,6 +107,17 @@
   --sidebar-ring: #80c7fe;
 }
 
+.green-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 12px #22c55e;
+  animation: arcade-pulse 1.8s ease-in-out infinite;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --text: #9ca3af;

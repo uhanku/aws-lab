@@ -1,40 +1,42 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
-import LandingArcade from './LandingArcade'
+import { lazy, Suspense, useEffect, useState } from 'react';
+import LandingArcade from './LandingArcade';
 
-const Me = lazy(() => import('./me/Me'))
-const Blog = lazy(() => import('./blog/Blog'))
+const Me = lazy(() => import('./me/Me'));
+const Blog = lazy(() => import('./blog/Blog'));
 
 function RouteFallback() {
-  return <main style={{ minHeight: '100vh' }}>Loading...</main>
+  return <main style={{ minHeight: '100vh' }}>Loading...</main>;
 }
 
 function App() {
-  const [path, setPath] = useState(() => window.location.pathname.replace(/\/+$/, '') || '/')
+  const [path, setPath] = useState(
+    () => window.location.pathname.replace(/\/+$/, '') || '/',
+  );
 
   useEffect(() => {
     const handlePopState = () => {
-      setPath(window.location.pathname.replace(/\/+$/, '') || '/')
-    }
+      setPath(window.location.pathname.replace(/\/+$/, '') || '/');
+    };
 
-    window.addEventListener('popstate', handlePopState)
+    window.addEventListener('popstate', handlePopState);
 
     return () => {
-      window.removeEventListener('popstate', handlePopState)
-    }
-  }, [])
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
 
   const navigate = (nextPath: string) => {
-    const normalizedPath = nextPath.replace(/\/+$/, '') || '/'
+    const normalizedPath = nextPath.replace(/\/+$/, '') || '/';
 
     if (normalizedPath === path) {
-      return
+      return;
     }
 
-    window.history.pushState({}, '', normalizedPath)
-    setPath(normalizedPath)
-  }
+    window.history.pushState({}, '', normalizedPath);
+    setPath(normalizedPath);
+  };
 
-  const isBlogPath = path === '/blog' || path.startsWith('/blog/')
+  const isBlogPath = path === '/blog' || path.startsWith('/blog/');
 
   return (
     <Suspense fallback={<RouteFallback />}>
@@ -46,7 +48,7 @@ function App() {
         <LandingArcade onNavigate={navigate} />
       )}
     </Suspense>
-  )
+  );
 }
 
-export default App
+export default App;
