@@ -2,7 +2,6 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import './Blog.css';
 import './BlogTableOfContents.css';
-import './inspiration/index.css';
 import { BlogLink } from './components/BlogLink';
 import { BlogPostCard } from './components/BlogPostCard';
 import { createMdxComponents } from './components/mdxComponents';

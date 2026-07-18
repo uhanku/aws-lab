@@ -63,7 +63,7 @@ export function BlogPostCard({ post, index, onNavigate }: BlogPostCardProps) {
 
   return (
     <article
-      className={`post-card blog-reveal blog-reveal--card${post.toRelease ? ' post-card--disabled' : ''}`}
+      className={`post-card blog-reveal blog-reveal--card${post.toRelease ? ' post-card--disabled post-card--to-release post-card--signal-glitch' : ''}`}
       style={
         {
           '--blog-reveal-delay': `${Math.min(index, 7) * 0.1}s`,
