@@ -479,13 +479,7 @@ a {
   text-shadow: 5px 5px 0 rgba(116, 55, 235, 0.52);
 }
 
-.blog-handle {
-  margin: 14px 0 0;
-  color: var(--arcade-cyan);
-  font-size: clamp(0.54rem, 0.72vw, 0.7rem);
-  font-weight: 900;
-  letter-spacing: 0.1em;
-}
+
 
 .blog-intro__description {
   position: relative;

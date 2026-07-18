@@ -174,7 +174,6 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
         <div className="blog-intro__title blog-reveal blog-reveal--1">
           <p className="blog-eyebrow">NOTES · EXPERIMENTS · LESSONS</p>
           <h1 id="page-title">Updates</h1>
-          <p className="blog-handle">@uhanku / journal</p>
         </div>
         <p className="blog-intro__description blog-reveal blog-reveal--2">
           I’m not trying to have all the answers. I’m simply recording the
