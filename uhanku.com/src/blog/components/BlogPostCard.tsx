@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { BlogPostMetadata, Navigate } from "../types";
 import { BlogLink } from "./BlogLink";
 
@@ -62,7 +63,12 @@ export function BlogPostCard({ post, index, onNavigate }: BlogPostCardProps) {
 
   return (
     <article
-      className={`post-card${post.toRelease ? " post-card--disabled" : ""}`}
+      className={`post-card blog-reveal blog-reveal--card${post.toRelease ? " post-card--disabled" : ""}`}
+      style={
+        {
+          "--blog-reveal-delay": `${Math.min(index, 7) * 0.1}s`,
+        } as CSSProperties
+      }
     >
       {post.toRelease ? (
         <div className="post-card__disabled-link" aria-disabled="true">

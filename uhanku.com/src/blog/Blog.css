@@ -165,7 +165,6 @@
 .blog-tags li {
   padding: 6px 10px;
   border: 1px solid var(--blog-border);
-  border-radius: 999px;
   color: var(--blog-muted);
   font-size: var(--text-sm);
 }

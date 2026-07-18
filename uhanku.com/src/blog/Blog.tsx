@@ -171,12 +171,12 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
   return (
     <main className="blog-content">
       <section className="blog-intro">
-        <div className="blog-intro__title">
+        <div className="blog-intro__title blog-reveal blog-reveal--1">
           <p className="blog-eyebrow">NOTES · EXPERIMENTS · LESSONS</p>
           <h1 id="page-title">Updates</h1>
           <p className="blog-handle">@uhanku / journal</p>
         </div>
-        <p className="blog-intro__description">
+        <p className="blog-intro__description blog-reveal blog-reveal--2">
           I’m not trying to have all the answers. I’m simply recording the
           questions that make me want to learn
         </p>
@@ -379,11 +379,15 @@ function BlogPostPage({
   return (
     <main className="blog-content blog-main--post">
       <article className="blog-article" ref={articleRef}>
-        <BlogLink className="blog-back-link" onNavigate={onNavigate} to="/blog">
+        <BlogLink
+          className="blog-back-link blog-reveal blog-reveal--1"
+          onNavigate={onNavigate}
+          to="/blog"
+        >
           ← All posts
         </BlogLink>
 
-        <header className="blog-article-header">
+        <header className="blog-article-header blog-reveal blog-reveal--2">
           <time dateTime={post.metadata.date}>
             {formatDate(post.metadata.date)}
           </time>
@@ -393,7 +397,7 @@ function BlogPostPage({
 
         {tableOfContents.length ? (
           <nav
-            className="blog-table-of-contents"
+            className="blog-table-of-contents blog-reveal blog-reveal--3"
             aria-labelledby="blog-table-of-contents-title"
           >
             <p
@@ -415,7 +419,7 @@ function BlogPostPage({
           </nav>
         ) : null}
 
-        <div className="blog-prose">
+        <div className="blog-prose blog-reveal blog-reveal--4">
           <Content components={mdxComponents} />
         </div>
       </article>
@@ -464,9 +468,9 @@ export default function Blog({ onNavigate, path }: BlogProps) {
             <span>BUILDING IN PUBLIC</span>
           </div>
           <div className="blog-cover__copy" aria-hidden="true">
-            <span>BUILD</span>
-            <span>WRITE</span>
-            <span>SHARE</span>
+            <span className="blog-reveal blog-reveal--1">BUILD</span>
+            <span className="blog-reveal blog-reveal--2">WRITE</span>
+            <span className="blog-reveal blog-reveal--3">SHARE</span>
           </div>
           <span className="blog-shape blog-shape--one" aria-hidden="true" />
           <span className="blog-shape blog-shape--two" aria-hidden="true" />
