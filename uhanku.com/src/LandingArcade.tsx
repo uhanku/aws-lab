@@ -52,13 +52,9 @@ function LandingArcade({ onNavigate }: LandingArcadeProps) {
           <aside className="arcade-sidebar arcade-sidebar--left arcade-reveal arcade-reveal--2">
             <p>SELECT MODE</p>
             <nav aria-label="Portfolio sections">
-              <a
-                className="is-active"
-                href="/me"
-                onClick={handleInternalRoute("/me")}
-              >
+              <a className="is-active" href="#">
                 <span>01</span>
-                PROJECTS
+                PROFILE
                 <i aria-hidden="true">↗</i>
               </a>
               <a href="/blog" onClick={handleInternalRoute("/blog")}>
@@ -76,7 +72,7 @@ function LandingArcade({ onNavigate }: LandingArcadeProps) {
             <div className="arcade-quest">
               <span>ACTIVE QUEST</span>
               <b>Build useful AI tools</b>
-              <div aria-label="Quest progress: 7 percent">
+              <div aria-label="Quest progress: 67 percent">
                 <i />
               </div>
               <small>67% · permanently in progress</small>

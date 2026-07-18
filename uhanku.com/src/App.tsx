@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
-import Landing from './Landing'
+import LandingArcade from './LandingArcade'
 
 const Me = lazy(() => import('./me/Me'))
 const Blog = lazy(() => import('./blog/Blog'))
@@ -43,7 +43,7 @@ function App() {
       ) : isBlogPath ? (
         <Blog path={path} onNavigate={navigate} />
       ) : (
-        <Landing onNavigate={navigate} />
+        <LandingArcade onNavigate={navigate} />
       )}
     </Suspense>
   )
