@@ -58,14 +58,13 @@
 }
 
 .blog-intro {
-  max-width: 720px;
   margin-bottom: 56px;
 }
 
 .blog-eyebrow {
   margin: 0 0 14px;
   color: var(--blog-accent);
-  font-size: 0.76rem;
+  font-size: var(--text-sm);
   font-weight: 800;
   letter-spacing: 0.16em;
 }
@@ -74,15 +73,14 @@
 .blog-article-header h1,
 .blog-not-found h1 {
   margin: 0;
-  font-size: clamp(2.4rem, 8vw, 5.5rem);
+  font-size: var(--text-display);
   line-height: 0.98;
   letter-spacing: -0.06em;
 }
 
 .blog-intro > p:last-child,
 .blog-article-header > p {
-  color: var(--blog-muted);
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
   line-height: 1.75;
   margin-top: 10px;
 }
@@ -131,7 +129,7 @@
   display: block;
   margin-bottom: 12px;
   color: var(--blog-accent);
-  font-size: 0.76rem;
+  font-size: var(--text-sm);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -140,12 +138,12 @@
 .blog-card time,
 .blog-article-header time {
   color: var(--blog-muted);
-  font-size: 0.88rem;
+  font-size: var(--text-md);
 }
 
 .blog-card h2 {
   margin: 10px 0;
-  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-size: clamp(var(--text-2xl), 3vw, var(--text-3xl));
   letter-spacing: -0.03em;
 }
 
@@ -169,7 +167,7 @@
   border: 1px solid var(--blog-border);
   border-radius: 999px;
   color: var(--blog-muted);
-  font-size: 0.78rem;
+  font-size: var(--text-sm);
 }
 
 .blog-article {
@@ -191,11 +189,11 @@
 
 .blog-article-header h1 {
   margin-top: 12px;
-  font-size: clamp(2.3rem, 7vw, 4.8rem);
+  font-size: clamp(var(--text-3xl), 7vw, var(--text-display));
 }
 
 .blog-prose {
-  font-size: 1.04rem;
+  font-size: var(--text-lg);
   line-height: 1.82;
 }
 
@@ -208,11 +206,11 @@
 }
 
 .blog-prose h2 {
-  font-size: 2rem;
+  font-size: var(--text-3xl);
 }
 
 .blog-prose h3 {
-  font-size: 1.45rem;
+  font-size: var(--text-2xl);
 }
 
 .blog-prose p,
@@ -239,7 +237,7 @@
   border: 1px solid var(--blog-border);
   border-radius: 6px;
   background: var(--blog-panel);
-  font-size: 0.9em;
+  font-size: var(--text-md);
 }
 
 .blog-prose pre {
@@ -315,7 +313,7 @@
 .blog-gallery figcaption {
   margin-top: 8px;
   color: var(--blog-muted);
-  font-size: 0.84rem;
+  font-size: var(--text-md);
 }
 
 .blog-status,

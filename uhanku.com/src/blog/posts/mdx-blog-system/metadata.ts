@@ -9,5 +9,5 @@ export const metadata = {
   slug: "mdx-blog-system",
   tags: ["React", "MDX", "Vite", "AWS"],
   cover: architecture,
-  draft: true,
+  draft: false,
 } satisfies BlogPostMetadata;

@@ -73,7 +73,7 @@
 .eyebrow {
   padding-top: 10px;
   color: var(--card-text);
-  font-size: 0.76rem;
+  font-size: var(--text-sm);
   font-weight: 950;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -95,13 +95,13 @@
 }
 
 .icon img { display: block; width: clamp(54px, 6.5vw, 76px); height: clamp(54px, 6.5vw, 76px); object-fit: contain; image-rendering: pixelated; filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.22)); }
-.blogIcon span { display: grid; width: 52px; height: 52px; place-items: center; border: 1px solid rgba(255, 255, 255, 0.13); border-radius: 16px; color: var(--me-text-h); font-size: 2.2rem; font-weight: 950; line-height: 1; background: rgba(255, 255, 255, 0.075); }
+.blogIcon span { display: grid; width: 52px; height: 52px; place-items: center; border: 1px solid rgba(255, 255, 255, 0.13); border-radius: 16px; color: var(--me-text-h); font-size: var(--text-3xl); font-weight: 950; line-height: 1; background: rgba(255, 255, 255, 0.075); }
 .header { margin-bottom: 14px; }
-.card h2 { margin: 0; color: var(--me-text-h); font-size: clamp(1.35rem, 2.5vw, 2.45rem); line-height: 1; letter-spacing: -0.045em; font-weight: 950; }
+.card h2 { margin: 0; color: var(--me-text-h); font-size: clamp(var(--text-2xl), 2.5vw, var(--text-4xl)); line-height: 1; letter-spacing: -0.045em; font-weight: 950; }
 .arrow { display: grid; flex: 0 0 auto; width: 42px; height: 42px; place-items: center; border: 1px solid var(--card-border); border-radius: 999px; color: var(--me-text-h); font-weight: 950; background: var(--card-chip); }
 .card p { max-width: 92%; margin: 0 0 clamp(12px, 2dvh, 24px); line-height: 1.6; }
 .tags { display: flex; flex-wrap: wrap; gap: clamp(4px, 0.7vw, 8px); padding: 0; margin: auto 0 clamp(12px, 2dvh, 24px); list-style: none; }
-.tags li { padding: clamp(4px, 0.5vw, 6px) clamp(7px, 0.8vw, 10px); border: 1px solid var(--card-border); border-radius: 999px; color: var(--me-text-h); font-size: clamp(0.68rem, 0.8vw, 0.78rem); font-weight: 750; background: var(--card-chip); }
+.tags li { padding: clamp(4px, 0.5vw, 6px) clamp(7px, 0.8vw, 10px); border: 1px solid var(--card-border); border-radius: 999px; color: var(--me-text-h); font-size: var(--text-sm); font-weight: 750; background: var(--card-chip); }
 .cta { color: var(--card-text); font-weight: 950; }
 
 .theme--doc-blue { --card-glow: rgba(128, 199, 254, 0.38); --card-border: rgba(128, 199, 254, 0.5); --card-text: #80c7fe; --card-surface: rgba(128, 199, 254, 0.105); --card-surface-strong: rgba(128, 199, 254, 0.155); --card-chip: rgba(128, 199, 254, 0.11); }
@@ -115,5 +115,5 @@
   .top { min-height: 72px; }
   .icon, .blogIcon { width: 72px; height: 72px; border-radius: 20px; }
   .icon img { width: 62px; height: 62px; }
-  .blogIcon span { width: 44px; height: 44px; border-radius: 14px; font-size: 1.9rem; }
+  .blogIcon span { width: 44px; height: 44px; border-radius: 14px; font-size: var(--text-3xl); }
 }

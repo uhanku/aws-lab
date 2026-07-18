@@ -2,7 +2,9 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import "./Blog.css";
 import "./BlogTableOfContents.css";
+import "./inspiration/index.css";
 import { BlogLink } from "./components/BlogLink";
+import { BlogPostCard } from "./components/BlogPostCard";
 import { createMdxComponents } from "./components/mdxComponents";
 import { loadBlogPost, loadBlogPosts } from "./content";
 import type { BlogPostMetadata, LoadedBlogPost, Navigate } from "./types";
@@ -29,6 +31,12 @@ function createHeadingId(value: string) {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "") || "section"
   );
+}
+
+function formatDate(value: string) {
+  return new Intl.DateTimeFormat("en-GB", {
+    dateStyle: "long",
+  }).format(new Date(`${value}T00:00:00`));
 }
 
 let cachedBlogPosts: BlogPostMetadata[] | null = null;
@@ -97,24 +105,22 @@ function loadCachedBlogPost(slug: string) {
   return request;
 }
 
-function formatDate(value: string) {
-  return new Intl.DateTimeFormat("en-GB", {
-    dateStyle: "long",
-  }).format(new Date(`${value}T00:00:00`));
-}
-
 function BlogHeader({ onNavigate }: { onNavigate: Navigate }) {
   return (
-    <header className="blog-header">
+    <header className="blog-cover__topbar">
       <BlogLink className="blog-brand" onNavigate={onNavigate} to="/">
-        uhanku.com
+        UHANKU.COM
       </BlogLink>
-      <nav aria-label="Blog navigation">
-        <BlogLink onNavigate={onNavigate} to="/blog">
+
+      <nav className="blog-nav" aria-label="Primary navigation">
+        <BlogLink className="is-active" onNavigate={onNavigate} to="/blog">
           Blog
         </BlogLink>
-        <BlogLink onNavigate={onNavigate} to="/me">
+        {/* <BlogLink onNavigate={onNavigate} to="/me">
           Projects
+        </BlogLink> */}
+        <BlogLink onNavigate={onNavigate} to="/">
+          Profile
         </BlogLink>
       </nav>
     </header>
@@ -163,60 +169,67 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
   }, []);
 
   return (
-    <main className="blog-main">
+    <main className="blog-content">
       <section className="blog-intro">
-        <p className="blog-eyebrow">BLOG</p>
-        <h1>Last Updates</h1>
-        <p>Just me thinking and doing things...</p>
+        <div className="blog-intro__title">
+          <p className="blog-eyebrow">NOTES · EXPERIMENTS · LESSONS</p>
+          <h1 id="page-title">Updates</h1>
+          <p className="blog-handle">@uhanku / journal</p>
+        </div>
+        <p className="blog-intro__description">
+          I’m not trying to have all the answers. I’m simply recording the
+          questions that make me want to learn
+        </p>
       </section>
+
+      <div className="blog-section-heading">
+        <div>
+          <span className="status-dot" aria-hidden="true" />
+          <span>Latest entries</span>
+        </div>
+        <span>{String(posts.length).padStart(2, "0")} POSTS</span>
+      </div>
 
       {loading ? <p className="blog-status">Loading posts...</p> : null}
       {error ? <p className="blog-status blog-status--error">{error}</p> : null}
 
       {!loading && !error ? (
         <section className="blog-list" aria-label="Blog posts">
-          {posts.map((post) => (
-            <article
-              className={`blog-card${post.toRelease ? " blog-card--disabled" : ""}`}
+          {posts.map((post, index) => (
+            <BlogPostCard
               key={post.slug}
-              aria-disabled={post.toRelease || undefined}
-            >
-              {post.toRelease ? (
-                <div className="blog-card-link">
-                  <span className="blog-card-status">Coming soon</span>
-                  <time dateTime={post.date}>{formatDate(post.date)}</time>
-                  <h2>{post.title}</h2>
-                  <p>{post.description}</p>
-                  {post.tags?.length ? (
-                    <ul className="blog-tags" aria-label="Post tags">
-                      {post.tags.map((tag) => (
-                        <li key={tag}>{tag}</li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </div>
-              ) : (
-                <BlogLink
-                  className="blog-card-link"
-                  onNavigate={onNavigate}
-                  to={`/blog/${post.slug}`}
-                >
-                  <time dateTime={post.date}>{formatDate(post.date)}</time>
-                  <h2>{post.title}</h2>
-                  <p>{post.description}</p>
-                  {post.tags?.length ? (
-                    <ul className="blog-tags" aria-label="Post tags">
-                      {post.tags.map((tag) => (
-                        <li key={tag}>{tag}</li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </BlogLink>
-              )}
-            </article>
+              index={index}
+              onNavigate={onNavigate}
+              post={post}
+            />
           ))}
         </section>
       ) : null}
+
+      <footer className="blog-footer">
+        <div className="blog-footer__status">
+          <span aria-hidden="true" />
+          Building, testing, and documenting the mess.
+        </div>
+        <div className="blog-footer__links">
+          <BlogLink
+            className="footer-link footer-link--secondary"
+            onNavigate={onNavigate}
+            to="/"
+          >
+            <span>Back to profile</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M17 12H7m4-4-4 4 4 4" />
+            </svg>
+          </BlogLink>
+          <BlogLink className="footer-link" onNavigate={onNavigate} to="/me">
+            <span>Explore my projects</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 17 17 7M8 7h9v9" />
+            </svg>
+          </BlogLink>
+        </div>
+      </footer>
     </main>
   );
 }
@@ -345,12 +358,12 @@ function BlogPostPage({
   });
 
   if (loading) {
-    return <main className="blog-main blog-status">Loading post...</main>;
+    return <main className="blog-content blog-status">Loading post...</main>;
   }
 
   if (error || !post) {
     return (
-      <main className="blog-main blog-not-found">
+      <main className="blog-content blog-not-found">
         <p className="blog-eyebrow">404</p>
         <h1>Post not found</h1>
         <p>{error}</p>
@@ -364,7 +377,7 @@ function BlogPostPage({
   const Content = post.default;
 
   return (
-    <main className="blog-main blog-main--post">
+    <main className="blog-content blog-main--post">
       <article className="blog-article" ref={articleRef}>
         <BlogLink className="blog-back-link" onNavigate={onNavigate} to="/blog">
           ← All posts
@@ -437,21 +450,42 @@ export default function Blog({ onNavigate, path }: BlogProps) {
   const isSingleSegmentSlug = slug && !slug.includes("/");
 
   return (
-    <div className="blog-shell">
-      <BlogHeader onNavigate={onNavigate} />
-      {path === "/blog" ? (
-        <BlogIndex onNavigate={onNavigate} />
-      ) : isSingleSegmentSlug ? (
-        <BlogPostPage key={slug} onNavigate={onNavigate} slug={slug} />
-      ) : (
-        <main className="blog-main blog-not-found">
-          <p className="blog-eyebrow">404</p>
-          <h1>Page not found</h1>
-          <BlogLink onNavigate={onNavigate} to="/blog">
-            Return to the blog
-          </BlogLink>
-        </main>
-      )}
+    <div className="blog-page">
+      <div className="blog-backdrop" aria-hidden="true">
+        <span className="blog-orb blog-orb--one" />
+        <span className="blog-orb blog-orb--two" />
+        <span className="blog-grid" />
+      </div>
+      <div className="blog-shell">
+        <header className="blog-cover">
+          <BlogHeader onNavigate={onNavigate} />
+          <div className="blog-cover__meta" aria-hidden="true">
+            <span>JOURNAL / 02</span>
+            <span>BUILDING IN PUBLIC</span>
+          </div>
+          <div className="blog-cover__copy" aria-hidden="true">
+            <span>BUILD</span>
+            <span>WRITE</span>
+            <span>SHARE</span>
+          </div>
+          <span className="blog-shape blog-shape--one" aria-hidden="true" />
+          <span className="blog-shape blog-shape--two" aria-hidden="true" />
+          <span className="blog-shape blog-shape--three" aria-hidden="true" />
+        </header>
+        {path === "/blog" ? (
+          <BlogIndex onNavigate={onNavigate} />
+        ) : isSingleSegmentSlug ? (
+          <BlogPostPage key={slug} onNavigate={onNavigate} slug={slug} />
+        ) : (
+          <main className="blog-main blog-not-found">
+            <p className="blog-eyebrow">404</p>
+            <h1>Page not found</h1>
+            <BlogLink onNavigate={onNavigate} to="/blog">
+              Return to the blog
+            </BlogLink>
+          </main>
+        )}
+      </div>
     </div>
   );
 }
