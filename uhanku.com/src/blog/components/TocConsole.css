@@ -1,0 +1,100 @@
+.toc-console {
+  position: sticky;
+  top: 112px;
+  grid-column: 1;
+  grid-row: 3;
+  align-self: start;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--blog-accent) 45%, transparent);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--blog-bg) 76%, transparent);
+  box-shadow: 6px 6px 0 color-mix(in srgb, var(--blog-accent) 16%, transparent);
+}
+
+.toc-console__bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--blog-accent) 36%, transparent);
+  color: var(--blog-accent);
+  background: color-mix(in srgb, var(--blog-accent) 6%, transparent);
+  font-family: var(
+    --font-mono,
+    ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace
+  );
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.toc-console__bar span:last-child {
+  color: #d8ff65;
+}
+
+.toc-console__list {
+  display: grid;
+  gap: 0;
+  padding: 8px 0;
+  margin: 0;
+  list-style: none;
+}
+
+.toc-console__item--level-3 {
+  padding-left: 12px;
+}
+
+.toc-console__list a {
+  display: block;
+  padding: 11px 14px;
+  border-left: 2px solid transparent;
+  color: var(--blog-muted);
+  font-family: var(
+    --font-mono,
+    ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace
+  );
+  font-size: 0.68rem;
+  line-height: 1.65;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    color 140ms ease,
+    border-color 140ms ease,
+    background 140ms ease;
+}
+
+.toc-console__list a:hover,
+.toc-console__list a:focus-visible {
+  border-left-color: #d8ff65;
+  color: #d8ff65;
+  outline: none;
+  background: color-mix(in srgb, #d8ff65 8%, transparent);
+}
+
+@media (max-width: 1120px) {
+  .toc-console {
+    position: static;
+    width: 100%;
+    max-height: none;
+    margin: 0 0 40px;
+    overflow: visible;
+  }
+
+  .toc-console__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .toc-console__list {
+    grid-template-columns: 1fr;
+  }
+}

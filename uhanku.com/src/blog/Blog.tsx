@@ -4,6 +4,7 @@ import './Blog.css';
 import './BlogTableOfContents.css';
 import { BlogLink } from './components/BlogLink';
 import { BlogPostCard } from './components/BlogPostCard';
+import { TocConsole } from './components/TocConsole';
 import { createMdxComponents } from './components/mdxComponents';
 import { loadBlogPost, loadBlogPosts } from './content';
 import type { BlogPostMetadata, LoadedBlogPost, Navigate } from './types';
@@ -393,29 +394,7 @@ function BlogPostPage({
           <p>{post.metadata.description}</p>
         </header>
 
-        {tableOfContents.length ? (
-          <nav
-            className="blog-table-of-contents blog-reveal blog-reveal--3"
-            aria-labelledby="blog-table-of-contents-title"
-          >
-            <p
-              className="blog-table-of-contents-title"
-              id="blog-table-of-contents-title"
-            >
-              On this page
-            </p>
-            <ol>
-              {tableOfContents.map((item) => (
-                <li
-                  className={`blog-table-of-contents-item blog-table-of-contents-item--level-${item.level}`}
-                  key={item.id}
-                >
-                  <a href={`#${item.id}`}>{item.label}</a>
-                </li>
-              ))}
-            </ol>
-          </nav>
-        ) : null}
+        {tableOfContents.length ? <TocConsole items={tableOfContents} /> : null}
 
         <div className="blog-prose blog-reveal blog-reveal--4">
           <Content components={mdxComponents} />
