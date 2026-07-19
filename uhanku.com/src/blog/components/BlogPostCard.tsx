@@ -40,7 +40,9 @@ export function BlogPostCard({ post, index, onNavigate }: BlogPostCardProps) {
         <p className="post-card__type">
           {post.toRelease ? 'COMING SOON' : 'JOURNAL ENTRY'}
         </p>
-        <h2>{post.title}</h2>
+        <h2 className="glitch-title" data-text={post.title}>
+          {post.title}
+        </h2>
         <p>{post.description}</p>
       </div>
 
@@ -63,7 +65,7 @@ export function BlogPostCard({ post, index, onNavigate }: BlogPostCardProps) {
 
   return (
     <article
-      className={`post-card blog-reveal blog-reveal--card${post.toRelease ? ' post-card--disabled post-card--to-release post-card--signal-glitch' : ''}`}
+      className={`post-card blog-reveal blog-reveal--card${post.toRelease ? ' post-card--disabled post-card--to-release post-card--rgb-glitch' : ''}`}
       style={
         {
           '--blog-reveal-delay': `${Math.min(index, 7) * 0.1}s`,

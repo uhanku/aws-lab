@@ -823,8 +823,6 @@ a {
   text-shadow: 5px 5px 0 rgba(116, 55, 235, 0.52);
 }
 
-
-
 .blog-intro__description {
   position: relative;
   max-width: 50rem;
@@ -1427,4 +1425,182 @@ a {
 
 .blog-intro__title {
   min-width: 0;
+}
+
+/* ==========================================================================
+   RGB GLITCH — DISABLED CARD
+   ========================================================================== */
+
+.post-card {
+  --rgb-glitch-cyan: var(--arcade-cyan);
+  --rgb-glitch-pink: var(--arcade-hot);
+  position: relative;
+}
+
+.glitch-title {
+  position: relative;
+  isolation: isolate;
+}
+
+.post-card--rgb-glitch .glitch-title::before,
+.post-card--rgb-glitch .glitch-title::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: attr(data-text);
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: none;
+}
+
+.post-card--rgb-glitch .glitch-title::before {
+  color: var(--rgb-glitch-cyan);
+  clip-path: inset(0 0 48% 0);
+}
+
+.post-card--rgb-glitch .glitch-title::after {
+  color: var(--rgb-glitch-pink);
+  clip-path: inset(54% 0 0 0);
+}
+
+.post-card--rgb-glitch > a:hover .glitch-title::before,
+.post-card--rgb-glitch > a:focus-visible .glitch-title::before {
+  opacity: 0.84;
+  animation: rgb-glitch-left 470ms steps(2, end) infinite;
+}
+
+.post-card--rgb-glitch > a:hover .glitch-title::after,
+.post-card--rgb-glitch > a:focus-visible .glitch-title::after {
+  opacity: 0.76;
+  animation: rgb-glitch-right 590ms steps(2, end) infinite;
+}
+
+.post-card--rgb-glitch > a:hover .post-card__type,
+.post-card--rgb-glitch > a:focus-visible .post-card__type {
+  text-shadow:
+    -3px 0 var(--rgb-glitch-pink),
+    3px 0 var(--rgb-glitch-cyan);
+  animation: rgb-metadata-skip 730ms steps(2, end) infinite;
+}
+
+.post-card--disabled > .post-card__disabled-link {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.76;
+  filter: saturate(0.78) contrast(1.04);
+  transform: none;
+}
+
+.post-card--disabled > .post-card__disabled-link::before,
+.post-card--disabled > .post-card__disabled-link::after {
+  opacity: 0.42;
+}
+
+.post-card--rgb-glitch.post-card--disabled .glitch-title::before {
+  opacity: 0.72;
+  animation: rgb-glitch-left 1.35s steps(2, end) infinite;
+}
+
+.post-card--rgb-glitch.post-card--disabled .glitch-title::after {
+  opacity: 0.64;
+  animation: rgb-glitch-right 1.7s steps(2, end) infinite;
+}
+
+.post-card--rgb-glitch.post-card--disabled .post-card__type {
+  text-shadow:
+    -1px 0 rgba(255, 93, 158, 0.8),
+    0px 0 rgba(99, 233, 255, 0.8);
+  animation: rgb-metadata-skip 2.2s steps(2, end) infinite;
+}
+
+.post-card--rgb-glitch.post-card--disabled .post-number {
+  animation: disabled-number-drop 2.6s steps(2, end) infinite;
+}
+
+@keyframes rgb-glitch-left {
+  0%,
+  72%,
+  100% {
+    transform: translate(0);
+    clip-path: inset(0 0 48% 0);
+  }
+  75% {
+    transform: translate(-6px, -1px);
+    clip-path: inset(8% 0 60% 0);
+  }
+  80% {
+    transform: translate(7px, 1px);
+    clip-path: inset(24% 0 42% 0);
+  }
+  86% {
+    transform: translate(-3px, 0);
+    clip-path: inset(2% 0 72% 0);
+  }
+}
+
+@keyframes rgb-glitch-right {
+  0%,
+  69%,
+  100% {
+    transform: translate(0);
+    clip-path: inset(54% 0 0 0);
+  }
+  73% {
+    transform: translate(7px, 1px);
+    clip-path: inset(61% 0 4% 0);
+  }
+  79% {
+    transform: translate(-8px, -1px);
+    clip-path: inset(47% 0 18% 0);
+  }
+  85% {
+    transform: translate(4px, 2px);
+    clip-path: inset(75% 0 1% 0);
+  }
+}
+
+@keyframes rgb-metadata-skip {
+  0%,
+  76%,
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  79% {
+    transform: translateX(-4px);
+    opacity: 0.5;
+  }
+  83% {
+    transform: translateX(3px);
+    opacity: 0.88;
+  }
+}
+
+@keyframes disabled-number-drop {
+  0%,
+  80%,
+  100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+  83% {
+    transform: translate(-3px, 2px);
+    opacity: 0.42;
+  }
+  87% {
+    transform: translate(2px, -1px);
+    opacity: 0.84;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-card--rgb-glitch .glitch-title::before,
+  .post-card--rgb-glitch .glitch-title::after {
+    display: none;
+  }
+
+  .post-card--rgb-glitch.post-card--disabled .post-card__type,
+  .post-card--rgb-glitch.post-card--disabled .post-number {
+    animation: none;
+  }
 }
