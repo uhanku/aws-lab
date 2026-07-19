@@ -39,6 +39,10 @@ function formatDate(value: string) {
   }).format(new Date(`${value}T00:00:00`));
 }
 
+function estimateReadTime(text: string) {
+  return `${Math.max(1, Math.ceil(text.trim().split(/\s+/).length / 220))} min`;
+}
+
 let cachedBlogPosts: BlogPostMetadata[] | null = null;
 const cachedBlogPostsBySlug = new Map<string, LoadedBlogPost>();
 let blogPostsRequest: Promise<BlogPostMetadata[]> | null = null;
@@ -250,6 +254,7 @@ function BlogPostPage({
   const [tableOfContents, setTableOfContents] = useState<TableOfContentsItem[]>(
     [],
   );
+  const [readTime, setReadTime] = useState('—');
   const articleRef = useRef<HTMLElement>(null);
   const mdxComponents = useMemo(
     () => createMdxComponents(onNavigate),
@@ -317,6 +322,11 @@ function BlogPostPage({
     const headings = article.querySelectorAll<HTMLHeadingElement>(
       '.blog-prose h2, .blog-prose h3',
     );
+    const prose = article.querySelector<HTMLElement>('.blog-prose');
+
+    if (prose) {
+      setReadTime(estimateReadTime(prose.textContent ?? ''));
+    }
 
     headings.forEach((heading) => {
       const label = heading.textContent?.trim();
@@ -374,26 +384,60 @@ function BlogPostPage({
   }
 
   const Content = post.default;
+  const entryNumber = Math.max(
+    1,
+    (cachedBlogPosts?.findIndex((item) => item.slug === slug) ?? -1) + 1,
+  );
 
   return (
     <main className="blog-content blog-main--post">
-      <article className="blog-article" ref={articleRef}>
-        <BlogLink
-          className="blog-back-link blog-reveal blog-reveal--1"
-          onNavigate={onNavigate}
-          to="/blog"
-        >
-          ← All posts
-        </BlogLink>
+      <BlogLink
+        className="blog-back-link blog-reveal blog-reveal--1"
+        onNavigate={onNavigate}
+        to="/blog"
+      >
+        ← All posts
+      </BlogLink>
 
-        <header className="blog-article-header blog-reveal blog-reveal--2">
-          <time dateTime={post.metadata.date}>
-            {formatDate(post.metadata.date)}
-          </time>
+      <header className="article-hero arcade-panel blog-reveal blog-reveal--2">
+        <div className="article-hero__signal" aria-hidden="true">
+          ENTRY {String(entryNumber).padStart(2, '0')}
+        </div>
+
+        <div className="article-hero__main">
           <h1>{post.metadata.title}</h1>
-          <p>{post.metadata.description}</p>
-        </header>
+          <p className="article-deck">{post.metadata.description}</p>
+        </div>
 
+        <dl className="article-meta" aria-label="Article metadata">
+          <div>
+            <dt>Published</dt>
+            <dd>
+              <time dateTime={post.metadata.date}>
+                {formatDate(post.metadata.date)}
+              </time>
+            </dd>
+          </div>
+          <div>
+            <dt>Read time</dt>
+            <dd>{readTime}</dd>
+          </div>
+          <div>
+            <dt>Status</dt>
+            <dd className="status-ready">Verified</dd>
+          </div>
+        </dl>
+
+        {post.metadata.tags?.length ? (
+          <ul className="blog-tags" aria-label="Article tags">
+            {post.metadata.tags.map((tag) => (
+              <li key={tag}>{tag}</li>
+            ))}
+          </ul>
+        ) : null}
+      </header>
+
+      <article className="blog-article" ref={articleRef}>
         {tableOfContents.length ? <TocConsole items={tableOfContents} /> : null}
 
         <div className="blog-prose blog-reveal blog-reveal--4">
