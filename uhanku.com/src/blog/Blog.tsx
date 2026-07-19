@@ -255,6 +255,7 @@ function BlogPostPage({
     [],
   );
   const [readTime, setReadTime] = useState('—');
+  const postMainRef = useRef<HTMLElement>(null);
   const articleRef = useRef<HTMLElement>(null);
   const mdxComponents = useMemo(
     () => createMdxComponents(onNavigate),
@@ -358,6 +359,15 @@ function BlogPostPage({
     setTableOfContents(items);
   }, [post, slug]);
 
+  useLayoutEffect(() => {
+    if (post) {
+      postMainRef.current?.scrollIntoView({
+        block: 'start',
+        behavior: 'auto',
+      });
+    }
+  }, [post, slug]);
+
   useDocumentMetadata({
     title: post?.metadata.title ?? 'Blog post',
     description:
@@ -390,7 +400,7 @@ function BlogPostPage({
   );
 
   return (
-    <main className="blog-content blog-main--post">
+    <main ref={postMainRef} className="blog-content blog-main--post">
       <BlogLink
         className="blog-back-link blog-reveal blog-reveal--1"
         onNavigate={onNavigate}
@@ -466,7 +476,9 @@ export default function Blog({ onNavigate, path }: BlogProps) {
   }, []);
 
   useLayoutEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    if (path === '/blog') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
   }, [path]);
 
   const slug = path.startsWith('/blog/')
