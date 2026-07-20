@@ -1,0 +1,26 @@
+.blog-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.blog-tags li {
+  padding: 7px 9px;
+  border: 1px solid
+    color-mix(in srgb, var(--post-color, var(--arcade-acid)) 25%, transparent);
+  color: var(--post-color, var(--arcade-acid));
+  background: color-mix(
+    in srgb,
+    var(--post-color, var(--arcade-acid)) 3.5%,
+    transparent
+  );
+  /* font-size: clamp(0.45rem, 0.56vw, 0.54rem); */
+  font-size: clamp(var(--text-2xs), 0.56vw, 0.54rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

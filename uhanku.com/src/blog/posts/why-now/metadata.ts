@@ -7,6 +7,7 @@ export const metadata = {
     'A behind-the-scenes look at why even bother with this all of this.',
   slug: 'why-now',
   tags: ['AWS', 'DNS', 'Overthinking'],
+  color: '--arcade-hot',
   toRelease: true,
   //   cover: architecture,
 } satisfies BlogPostMetadata;

@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import type { BlogPostMetadata, Navigate } from '../types';
 import { BlogLink } from './BlogLink';
+import { BlogTags } from './BlogTags';
 
 interface BlogPostCardProps {
   post: BlogPostMetadata;
@@ -48,11 +49,11 @@ export function BlogPostCard({ post, index, onNavigate }: BlogPostCardProps) {
 
       <div className="post-card__footer">
         {post.tags?.length ? (
-          <ul className="blog-tags" aria-label="Post tags">
-            {post.tags.map((tag) => (
-              <li key={tag}>{tag}</li>
-            ))}
-          </ul>
+          <BlogTags
+            ariaLabel="Post tags"
+            color={post.color}
+            tags={post.tags}
+          />
         ) : (
           <span />
         )}
@@ -69,6 +70,9 @@ export function BlogPostCard({ post, index, onNavigate }: BlogPostCardProps) {
       style={
         {
           '--blog-reveal-delay': `${Math.min(index, 7) * 0.1}s`,
+          '--post-color': post.color
+            ? `var(${post.color})`
+            : 'var(--arcade-acid)',
         } as CSSProperties
       }
     >

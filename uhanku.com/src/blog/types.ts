@@ -6,6 +6,7 @@ export interface BlogPostMetadata {
   description: string;
   slug: string;
   tags?: string[];
+  color?: string;
   cover?: string;
   draft?: boolean;
   toRelease?: boolean;

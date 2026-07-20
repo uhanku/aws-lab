@@ -8,6 +8,7 @@ export const metadata = {
     'How content folders, MDX modules, React components, and Vite routing work together on uhanku.com.',
   slug: 'mdx-blog-system',
   tags: ['React', 'MDX', 'Vite', 'AWS'],
+  color: '--arcade-acid',
   cover: architecture,
   draft: false,
 } satisfies BlogPostMetadata;

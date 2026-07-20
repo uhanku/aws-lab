@@ -6,6 +6,7 @@ export const metadata = {
   description: 'Me testing versions and AI generated web pages.',
   slug: 'one-shot',
   tags: ['HTML', 'CSS', 'JS'],
+  color: '--arcade-cyan',
   toRelease: true,
   //   cover: architecture,
 } satisfies BlogPostMetadata;

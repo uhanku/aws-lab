@@ -1,9 +1,11 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
+import '../variables.css';
 import './Blog.css';
 import './BlogTableOfContents.css';
 import { BlogLink } from './components/BlogLink';
 import { BlogPostCard } from './components/BlogPostCard';
+import { BlogTags } from './components/BlogTags';
 import { TocConsole } from './components/TocConsole';
 import { createMdxComponents } from './components/mdxComponents';
 import { loadBlogPost, loadBlogPosts } from './content';
@@ -439,11 +441,11 @@ function BlogPostPage({
         </dl>
 
         {post.metadata.tags?.length ? (
-          <ul className="blog-tags" aria-label="Article tags">
-            {post.metadata.tags.map((tag) => (
-              <li key={tag}>{tag}</li>
-            ))}
-          </ul>
+          <BlogTags
+            ariaLabel="Article tags"
+            color={post.metadata.color}
+            tags={post.metadata.tags}
+          />
         ) : null}
       </header>
 
