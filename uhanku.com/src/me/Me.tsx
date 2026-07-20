@@ -4,6 +4,7 @@ import docLlmIcon from '../assets/doc-llm-repo-icon.png';
 import faviconIcon from '../assets/favicon.svg';
 import gptRunnerIcon from '../assets/gpt-runner-repo-icon.png';
 import meBackground from '../assets/bg.png';
+import '../variables.css';
 import './Me.css';
 
 import ProjectCard, { type ProjectCardTheme } from './ProjectCard';

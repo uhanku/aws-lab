@@ -20,14 +20,8 @@
     color-mix(in srgb, var(--blog-accent) 36%, transparent);
   color: var(--blog-accent);
   background: color-mix(in srgb, var(--blog-accent) 6%, transparent);
-  font-family: var(
-    --font-mono,
-    ui-monospace,
-    SFMono-Regular,
-    Consolas,
-    monospace
-  );
-  font-size: 0.62rem;
+  font-family: var(--mono);
+  font-size: var(--text-sm);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -54,14 +48,8 @@
   padding: 11px 14px;
   border-left: 2px solid transparent;
   color: var(--blog-muted);
-  font-family: var(
-    --font-mono,
-    ui-monospace,
-    SFMono-Regular,
-    Consolas,
-    monospace
-  );
-  font-size: 0.68rem;
+  font-family: var(--mono);
+  font-size: var(--text-xs);
   line-height: 1.65;
   text-decoration: none;
   text-transform: uppercase;

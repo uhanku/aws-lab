@@ -1,0 +1,154 @@
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #fff;
+  --border: rgba(255, 255, 255, 0.14);
+  --code-bg: #f4f3ec;
+  --accent: #c084fc;
+  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-border: rgba(170, 59, 255, 0.5);
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --sans:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+  --mono:
+    'Press Start 2P', 'Cascadia Code', 'SFMono-Regular', Consolas, monospace;
+
+  /* Global typography scale. */
+  --text-2xs: 0.46rem;
+  --text-xs: 0.64rem;
+  --text-sm: 0.76rem;
+  --text-md: 0.88rem;
+  --text-lg: 1.04rem;
+  --text-xl: 1.2rem;
+  --text-2xl: 1.45rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.8rem;
+  --text-display: clamp(2.4rem, 8vw, 5.5rem);
+  --text-body: 1rem;
+  --text-label: var(--text-sm);
+  --text-code: 15px;
+
+  --background: #090a16;
+  --foreground: #f8fbff;
+  --card: #171a2d;
+  --card-foreground: #f8fbff;
+  --popover: #171a2d;
+  --popover-foreground: #f8fbff;
+  --primary: #80c7fe;
+  --primary-foreground: #06121f;
+  --secondary: #03d0a7;
+  --secondary-foreground: #021b17;
+  --muted: #20243a;
+  --muted-foreground: rgba(243, 247, 255, 0.72);
+  --accent-foreground: #16091f;
+
+  --input: rgba(255, 255, 255, 0.16);
+  --ring: #80c7fe;
+  --chart-1: #80c7fe;
+  --chart-2: #03d0a7;
+  --chart-3: #ff9f1c;
+  --chart-4: #c084fc;
+  --chart-5: #a855f7;
+  --radius: 0.625rem;
+  --sidebar: #0f1120;
+  --sidebar-foreground: #f8fbff;
+  --sidebar-primary: #80c7fe;
+  --sidebar-primary-foreground: #06121f;
+  --sidebar-accent: #1d2137;
+  --sidebar-accent-foreground: #c084fc;
+  --sidebar-border: rgba(255, 255, 255, 0.14);
+  --sidebar-ring: #80c7fe;
+
+  --arcade-acid: #d8ff65;
+  --arcade-hot: #ff5d9e;
+  --arcade-cyan: #63e9ff;
+  --arcade-purple: #7437eb;
+  --arcade-bg: #08070e;
+
+  --arcade-panel: rgba(13, 11, 23, 0.82);
+  --arcade-panel-solid: #0d0b17;
+  --arcade-ink: #f7f5ff;
+  --arcade-muted: #9a94aa;
+  --arcade-dim: #746e82;
+  --arcade-line: rgba(255, 255, 255, 0.13);
+
+  --success: #34d399;
+  --success-foreground: #031a12;
+  --success-bg: rgba(52, 211, 153, 0.12);
+  --success-border: rgba(52, 211, 153, 0.45);
+
+  --warning: #facc15;
+  --warning-foreground: #211800;
+  --warning-bg: rgba(250, 204, 21, 0.12);
+  --warning-border: rgba(250, 204, 21, 0.45);
+
+  --destructive: #fb7185;
+  --destructive-foreground: #240409;
+  --destructive-bg: rgba(251, 113, 133, 0.12);
+  --destructive-border: rgba(251, 113, 133, 0.45);
+
+  --info: #38bdf8;
+  --info-foreground: #031522;
+  --info-bg: rgba(56, 189, 248, 0.12);
+  --info-border: rgba(56, 189, 248, 0.45);
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --text-body: 16px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #16171d;
+    --border: #2e303a;
+    --code-bg: #1f2028;
+    --accent: #c084fc;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent-border: rgba(192, 132, 252, 0.5);
+    --social-bg: rgba(47, 48, 58, 0.5);
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+}
+
+.dark {
+  --background: #090a16;
+  --foreground: #f8fbff;
+  --card: #171a2d;
+  --card-foreground: #f8fbff;
+  --popover: #171a2d;
+  --popover-foreground: #f8fbff;
+  --primary: #80c7fe;
+  --primary-foreground: #06121f;
+  --secondary: #03d0a7;
+  --secondary-foreground: #021b17;
+  --muted: #20243a;
+  --muted-foreground: rgba(243, 247, 255, 0.72);
+  --accent: #c084fc;
+  --accent-foreground: #16091f;
+  --destructive: #ff9f1c;
+  --border: rgba(255, 255, 255, 0.14);
+  --input: rgba(255, 255, 255, 0.16);
+  --ring: #80c7fe;
+  --chart-1: #80c7fe;
+  --chart-2: #03d0a7;
+  --chart-3: #ff9f1c;
+  --chart-4: #c084fc;
+  --chart-5: #a855f7;
+  --sidebar: #0f1120;
+  --sidebar-foreground: #f8fbff;
+  --sidebar-primary: #80c7fe;
+  --sidebar-primary-foreground: #06121f;
+  --sidebar-accent: #1d2137;
+  --sidebar-accent-foreground: #c084fc;
+  --sidebar-border: rgba(255, 255, 255, 0.14);
+  --sidebar-ring: #80c7fe;
+}

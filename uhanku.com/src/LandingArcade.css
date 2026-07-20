@@ -1,14 +1,4 @@
 .arcade-page {
-  --arcade-acid: #d8ff65;
-  --arcade-hot: #ff5d9e;
-  --arcade-cyan: #63e9ff;
-  --arcade-purple: #7437eb;
-  --arcade-bg: #08070e;
-  --arcade-sans:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', sans-serif;
-  --arcade-mono:
-    'Press Start 2P', 'Cascadia Code', 'SFMono-Regular', Consolas, monospace;
   position: fixed;
   inset: 0;
   width: 100%;
@@ -31,7 +21,7 @@
     32px 32px,
     32px 32px,
     auto;
-  font-family: var(--arcade-mono);
+  font-family: var(--mono);
   isolation: isolate;
 }
 
@@ -78,7 +68,7 @@
   padding: 10px 14px;
   color: #08070e !important;
   background: #fff;
-  font: 700 var(--text-md)/1 var(--arcade-sans);
+  font: 700 var(--text-md)/1 var(--sans);
   transform: translateY(-180%);
   transition: transform 0.2s ease;
 }
@@ -278,7 +268,7 @@
 .arcade-quest b {
   display: block;
   margin: 10px 0 15px;
-  font: 800 var(--text-lg)/1.25 var(--arcade-sans);
+  font: 800 var(--text-lg)/1.25 var(--sans);
 }
 
 .arcade-quest > div {
@@ -349,7 +339,7 @@
 .arcade-title h1 {
   margin: 10px 0 3px;
   color: #f7f5ff;
-  font: 900 clamp(3.5rem, 7vw, 7.5rem) / 0.78 var(--arcade-sans);
+  font: 900 clamp(3.5rem, 7vw, 7.5rem) / 0.78 var(--sans);
   letter-spacing: -0.07em;
   text-shadow: 4px 4px 0 rgba(116, 55, 235, 0.5);
 }

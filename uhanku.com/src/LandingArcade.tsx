@@ -1,6 +1,7 @@
 import type { MouseEvent } from 'react';
 import catImage from './assets/uhanku-cat.png';
 
+import './variables.css';
 import './LandingArcade.css';
 
 type LandingArcadeProps = {
