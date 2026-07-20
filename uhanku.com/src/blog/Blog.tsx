@@ -49,6 +49,7 @@ let cachedBlogPosts: BlogPostMetadata[] | null = null;
 const cachedBlogPostsBySlug = new Map<string, LoadedBlogPost>();
 let blogPostsRequest: Promise<BlogPostMetadata[]> | null = null;
 const blogPostRequests = new Map<string, Promise<LoadedBlogPost | null>>();
+let pendingBlogIndexScrollY: number | null = null;
 
 function rememberBlogPosts(posts: BlogPostMetadata[]) {
   cachedBlogPosts = posts;
@@ -139,12 +140,24 @@ function BlogIndex({ onNavigate }: { onNavigate: Navigate }) {
   );
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(cachedBlogPosts === null);
+  const hasRestoredBlogScroll = useRef(false);
 
   useDocumentMetadata({
     title: 'Blog',
     description: 'Projects, experiments, and notes from Vinicius Silva.',
     path: '/blog',
   });
+
+  useLayoutEffect(() => {
+    if (loading || hasRestoredBlogScroll.current) {
+      return;
+    }
+
+    hasRestoredBlogScroll.current = true;
+    const scrollY = pendingBlogIndexScrollY ?? 0;
+    pendingBlogIndexScrollY = null;
+    window.scrollTo({ top: scrollY, left: 0, behavior: 'auto' });
+  }, [loading]);
 
   useEffect(() => {
     if (cachedBlogPosts) {
@@ -461,6 +474,14 @@ function BlogPostPage({
 }
 
 export default function Blog({ onNavigate, path }: BlogProps) {
+  const handleNavigate = (nextPath: string) => {
+    if (path === '/blog' && nextPath.startsWith('/blog/')) {
+      pendingBlogIndexScrollY = window.scrollY;
+    }
+
+    onNavigate(nextPath);
+  };
+
   useLayoutEffect(() => {
     const root = document.documentElement;
     const previousScrollbarGutter =
@@ -477,12 +498,6 @@ export default function Blog({ onNavigate, path }: BlogProps) {
     };
   }, []);
 
-  useLayoutEffect(() => {
-    if (path === '/blog') {
-      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-    }
-  }, [path]);
-
   const slug = path.startsWith('/blog/')
     ? decodeURIComponent(path.slice('/blog/'.length))
     : null;
@@ -497,7 +512,7 @@ export default function Blog({ onNavigate, path }: BlogProps) {
       </div>
       <div className="blog-shell">
         <header className="blog-cover">
-          <BlogHeader onNavigate={onNavigate} />
+          <BlogHeader onNavigate={handleNavigate} />
           <div className="blog-cover__meta" aria-hidden="true">
             <span>
               <span className="green-dot" aria-hidden="true" />
@@ -515,14 +530,14 @@ export default function Blog({ onNavigate, path }: BlogProps) {
           <span className="blog-shape blog-shape--three" aria-hidden="true" />
         </header>
         {path === '/blog' ? (
-          <BlogIndex onNavigate={onNavigate} />
+          <BlogIndex onNavigate={handleNavigate} />
         ) : isSingleSegmentSlug ? (
-          <BlogPostPage key={slug} onNavigate={onNavigate} slug={slug} />
+          <BlogPostPage key={slug} onNavigate={handleNavigate} slug={slug} />
         ) : (
           <main className="blog-main blog-not-found">
             <p className="blog-eyebrow">404</p>
             <h1>Page not found</h1>
-            <BlogLink onNavigate={onNavigate} to="/blog">
+            <BlogLink onNavigate={handleNavigate} to="/blog">
               Return to the blog
             </BlogLink>
           </main>
