@@ -3,6 +3,7 @@ import LandingArcade from './LandingArcade';
 
 const Me = lazy(() => import('./me/Me'));
 const Blog = lazy(() => import('./blog/Blog'));
+const CC = lazy(() => import('./cc/CC'));
 
 function RouteFallback() {
   return <main style={{ minHeight: '100vh' }}>Loading...</main>;
@@ -42,6 +43,8 @@ function App() {
     <Suspense fallback={<RouteFallback />}>
       {path === '/me' ? (
         <Me />
+      ) : path === '/cc' ? (
+        <CC />
       ) : isBlogPath ? (
         <Blog path={path} onNavigate={navigate} />
       ) : (
