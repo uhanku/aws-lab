@@ -397,7 +397,7 @@
   padding: 8px 0;
   color: var(--arcade-bg);
   background: var(--arcade-acid);
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
   text-align: center;
   letter-spacing: 0.12em;
   transform: rotate(36deg);

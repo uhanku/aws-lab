@@ -43,3 +43,4 @@ deploy.sh
 *.patch
 uhanku.com/dist
 uhanku.com/src/blog/inspiration
+uhanku.com/.rtk-data
