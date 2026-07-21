@@ -293,14 +293,6 @@
   margin-bottom: 6px;
 }
 
-.blog-callout--success {
-  border-color: color-mix(in srgb, #67d391 50%, transparent);
-}
-
-.blog-callout--warning {
-  border-color: color-mix(in srgb, #f0b45a 55%, transparent);
-}
-
 .blog-demo button {
   padding: 10px 14px;
   border: 1px solid var(--blog-border);
@@ -371,7 +363,7 @@
   border-radius: 0;
   background:
     linear-gradient(118deg, rgba(116, 55, 235, 0.24), transparent 42%),
-    var(--arcade-panel);
+    var(--arcade-bg);
   box-shadow:
     10px 10px 0 rgba(116, 55, 235, 0.17),
     inset 0 0 0 1px rgba(255, 255, 255, 0.025);
@@ -971,7 +963,7 @@ a {
   padding: clamp(22px, 3vw, 34px);
   border: 1px solid var(--arcade-line);
   color: #c7c2d1;
-  background: var(--arcade-panel);
+  background: var(--arcade-bg);
   box-shadow: 7px 7px 0 rgba(116, 55, 235, 0.12);
   font-family: var(--sans);
   font-size: clamp(1.05rem, 1.8vw, 1.48rem);
@@ -1095,7 +1087,7 @@ a {
   overflow: hidden;
   border: 1px solid var(--arcade-line);
   color: var(--arcade-ink);
-  background: var(--arcade-panel);
+  background: var(--arcade-bg);
 }
 
 .post-card > a {
@@ -1110,7 +1102,7 @@ a {
   color: var(--arcade-ink);
   background:
     linear-gradient(135deg, rgba(116, 55, 235, 0.09), transparent 48%),
-    var(--arcade-panel);
+    var(--arcade-bg);
   box-shadow: 8px 8px 0 rgba(116, 55, 235, 0.12);
   transition:
     color 0.18s ease,
@@ -1196,7 +1188,7 @@ a {
 }
 
 .post-card--to-release .post-card__type {
-  color: var(--success);
+  color: var(--arcade-acid);
 }
 
 .post-card h2 {

@@ -3,6 +3,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import '../variables.css';
 import './Blog.css';
 import './BlogTableOfContents.css';
+import './components/ArcadeComponents.css';
 import { BlogLink } from './components/BlogLink';
 import { BlogPostCard } from './components/BlogPostCard';
 import { BlogTags } from './components/BlogTags';

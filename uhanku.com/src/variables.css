@@ -1,13 +1,4 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: rgba(255, 255, 255, 0.14);
-  --code-bg: #f4f3ec;
-  --accent: #c084fc;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
@@ -32,13 +23,22 @@
   --text-label: var(--text-sm);
   --text-code: 15px;
 
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #fff;
+  --border: rgba(255, 255, 255, 0.14);
+  --code-bg: #f4f3ec;
+  --accent: #c084fc;
+  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-border: rgba(170, 59, 255, 0.5);
+  --social-bg: rgba(244, 243, 236, 0.5);
   --background: #090a16;
   --foreground: #f8fbff;
   --card: #171a2d;
   --card-foreground: #f8fbff;
   --popover: #171a2d;
   --popover-foreground: #f8fbff;
-  --primary: #80c7fe;
+  --primary: #f7f5ff;
   --primary-foreground: #06121f;
   --secondary: #03d0a7;
   --secondary-foreground: #021b17;
@@ -63,38 +63,20 @@
   --sidebar-border: rgba(255, 255, 255, 0.14);
   --sidebar-ring: #80c7fe;
 
+  --arcade-bg: #08070e;
   --arcade-acid: #d8ff65;
   --arcade-hot: #ff5d9e;
   --arcade-cyan: #63e9ff;
   --arcade-purple: #7437eb;
-  --arcade-bg: #08070e;
-
+  --arcade-orange: #ff9b4a;
+  --arcade-blue: #78a8ff;
+  --arcade-red: #ff5d72;
   --arcade-panel: rgba(13, 11, 23, 0.82);
   --arcade-panel-solid: #0d0b17;
   --arcade-ink: #f7f5ff;
   --arcade-muted: #9a94aa;
   --arcade-dim: #746e82;
   --arcade-line: rgba(255, 255, 255, 0.13);
-
-  --success: #34d399;
-  --success-foreground: #031a12;
-  --success-bg: rgba(52, 211, 153, 0.12);
-  --success-border: rgba(52, 211, 153, 0.45);
-
-  --warning: #facc15;
-  --warning-foreground: #211800;
-  --warning-bg: rgba(250, 204, 21, 0.12);
-  --warning-border: rgba(250, 204, 21, 0.45);
-
-  --destructive: #fb7185;
-  --destructive-foreground: #240409;
-  --destructive-bg: rgba(251, 113, 133, 0.12);
-  --destructive-border: rgba(251, 113, 133, 0.45);
-
-  --info: #38bdf8;
-  --info-foreground: #031522;
-  --info-bg: rgba(56, 189, 248, 0.12);
-  --info-border: rgba(56, 189, 248, 0.45);
 }
 
 @media (max-width: 1024px) {

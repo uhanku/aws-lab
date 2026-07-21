@@ -6,7 +6,7 @@
   min-height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
-  color: #f7f5ff;
+  color: var(--primary);
   background:
     radial-gradient(
       circle at 50% 48%,
@@ -338,7 +338,7 @@
 
 .arcade-title h1 {
   margin: 10px 0 3px;
-  color: #f7f5ff;
+  color: var(--primary);
   font: 900 clamp(3.5rem, 7vw, 7.5rem) / 0.78 var(--sans);
   letter-spacing: -0.07em;
   text-shadow: 4px 4px 0 rgba(116, 55, 235, 0.5);
