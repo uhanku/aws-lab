@@ -1,3 +1,4 @@
+import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 
@@ -46,11 +47,17 @@ export function ComponentCard({
       {codeSnippet ? (
         <div className="component-card__code-wrap">
           <button
-            className="component-card__copy"
+            aria-label={copied ? 'Code copied' : 'Copy code'}
+            className={`component-card__copy${copied ? ' is-copied' : ''}`}
+            title={copied ? 'Copied' : 'Copy code'}
             type="button"
             onClick={copySnippet}
           >
-            {copied ? 'Copied' : 'Copy'}
+            {copied ? (
+              <Check aria-hidden="true" size={15} strokeWidth={2.2} />
+            ) : (
+              <Copy aria-hidden="true" size={15} strokeWidth={1.9} />
+            )}
           </button>
           <pre className="component-card__code">
             <code>{codeSnippet}</code>

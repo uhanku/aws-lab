@@ -13,6 +13,20 @@ import { MediaFigure } from './MediaFigure';
 import { PostStatus } from './PostStatus';
 import { TerminalBlock } from './TerminalBlock';
 import { WordGlitch } from './WordGlitch';
+import {
+  ArticleTimeline,
+  CodeTabs,
+  DefinitionCard,
+  DiffBlock,
+  FileTree,
+  ProsCons,
+  ReadingUtilities,
+  ReferenceList,
+  ResourceCard,
+  SeriesNav,
+  TestReport,
+  TldrPanel,
+} from './BlogPostFeatures';
 
 export function createMdxComponents(onNavigate: Navigate) {
   const MdxAnchor = ({ href = '', ...props }: ComponentProps<'a'>) => {
@@ -58,6 +72,18 @@ export function createMdxComponents(onNavigate: Navigate) {
     PostStatus,
     Steps,
     TerminalBlock,
+    ArticleTimeline,
+    CodeTabs,
+    DefinitionCard,
+    DiffBlock,
+    FileTree,
+    ProsCons,
+    ReadingUtilities,
+    ReferenceList,
+    ResourceCard,
+    SeriesNav,
+    TestReport,
+    TldrPanel,
     WordGlitch,
   } satisfies Record<string, ElementType>;
 }
