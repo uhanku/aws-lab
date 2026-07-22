@@ -217,14 +217,9 @@
 
 .blog-prose h2,
 .blog-prose h3 {
-  margin-top: 2.2em;
   margin-bottom: 0.65em;
   line-height: 1.2;
   letter-spacing: -0.035em;
-}
-
-.blog-prose h2 {
-  font-size: var(--text-3xl);
 }
 
 .blog-prose h3 {

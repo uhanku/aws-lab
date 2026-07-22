@@ -75,6 +75,7 @@ h1 {
   }
 }
 h2 {
+  font-weight: 900;
   font-size: var(--text-2xl);
   line-height: 118%;
   letter-spacing: -0.24px;
@@ -109,4 +110,9 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+body ::selection {
+  color: var(--arcade-bg);
+  background: var(--arcade-acid);
 }

@@ -8,6 +8,6 @@ export const metadata = {
   slug: 'why-now',
   tags: ['AWS', 'DNS', 'Overthinking'],
   color: '--arcade-hot',
-  toRelease: true,
+  toRelease: false,
   //   cover: architecture,
 } satisfies BlogPostMetadata;

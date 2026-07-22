@@ -14,10 +14,10 @@
   --text-sm: 0.76rem;
   --text-md: 0.88rem;
   --text-lg: 1.04rem;
-  --text-xl: 1.2rem;
-  --text-2xl: 1.45rem;
-  --text-3xl: 2rem;
-  --text-4xl: 2.8rem;
+  --text-xl: 2.75rem;
+  --text-2xl: 3.5rem;
+  --text-3xl: 4.5rem;
+  --text-4xl: 5.75rem;
   --text-display: clamp(2.4rem, 8vw, 5.5rem);
   --text-body: 1rem;
   --text-label: var(--text-sm);
