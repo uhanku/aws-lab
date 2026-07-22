@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
+import { ArrowRight, ExternalLink, Search, Trash2, X, Zap } from 'lucide-react';
 
 import architectureDiagram from '../blog/posts/mdx-blog-system/architecture.svg';
 import {
@@ -21,6 +22,21 @@ import { MediaFigure } from '../blog/components/MediaFigure';
 import { PostStatus } from '../blog/components/PostStatus';
 import { TerminalBlock } from '../blog/components/TerminalBlock';
 import { WordGlitch } from '../blog/components/WordGlitch';
+import { useDocumentMetadata } from '../blog/useDocumentMetadata';
+import {
+  ArticleTimeline,
+  CodeTabs,
+  DefinitionCard,
+  DiffBlock,
+  FileTree,
+  ProsCons,
+  ReadingUtilities,
+  ReferenceList,
+  ResourceCard,
+  SeriesNav,
+  TestReport,
+  TldrPanel,
+} from '../blog/components/BlogPostFeatures';
 import '../blog/components/ArcadeComponents.css';
 import './CC.css';
 
@@ -82,7 +98,7 @@ const additionalTokens = [
 ] as const;
 
 const sections = [
-  ['colors', 'Theme tokens'],
+  ['colors', 'Colors'],
   ['article-copy', 'Article copy'],
   ['code', 'Code'],
   ['callouts', 'Callouts'],
@@ -91,9 +107,55 @@ const sections = [
   ['data', 'Data display'],
   ['structure', 'Structure'],
   ['media', 'Media'],
+  ['editorial-blocks', 'Editorial blocks'],
+  ['technical-evidence', 'Technical evidence'],
+  ['reading-references', 'Reading & references'],
   ['word-glitches', 'Word glitches'],
   ['effects', 'Effects'],
   ['class-reference', 'Class reference'],
+] as const;
+
+const sectionGroups = [
+  {
+    label: 'FOUNDATIONS',
+    ids: ['colors', 'article-copy'],
+  },
+  {
+    label: 'COMPONENTS',
+    ids: [
+      'code',
+      'callouts',
+      'buttons-tags',
+      'statuses',
+      'data',
+      'structure',
+      'media',
+      'editorial-blocks',
+    ],
+  },
+  {
+    label: 'EVIDENCE',
+    ids: ['technical-evidence', 'reading-references'],
+  },
+  {
+    label: 'IDENTITY',
+    ids: ['word-glitches', 'effects'],
+  },
+  {
+    label: 'REFERENCE',
+    ids: ['class-reference'],
+  },
+] as const;
+
+const catalogueStats = [
+  {
+    value: String(tokens.length + additionalTokens.length),
+    label: 'documented tokens',
+    accent: 'acid',
+  },
+  { value: '7', label: 'post statuses', accent: 'hot' },
+  { value: '30+', label: 'post patterns', accent: 'cyan' },
+  { value: 'MDX', label: 'ready components', accent: 'purple' },
 ] as const;
 
 const tableColumns = [
@@ -171,7 +233,10 @@ function TokenGrid({
           <code>{token.name}</code>
           <span>{token.value}</span>
           <small>{token.label}</small>
-          <CopyButton value={token.name} />
+          <CopyButton
+            value={`${token.name}: ${token.value};`}
+            label="Copy token"
+          />
         </article>
       ))}
     </div>
@@ -201,11 +266,12 @@ function CopyButton({
 
   return (
     <button
+      aria-label={copied ? `${label} copied` : label}
       className={`cc-copy${className ? ` ${className}` : ''}`}
       type="button"
       onClick={copy}
     >
-      {copied ? 'Copied' : label}
+      <span aria-live="polite">{copied ? 'Copied' : label}</span>
     </button>
   );
 }
@@ -237,7 +303,12 @@ function Section({
           <h2>{title}</h2>
           <p>{description}</p>
         </div>
-        <code>{className}</code>
+        <div className="cc-section__actions">
+          <code>{className}</code>
+          <a aria-label={`Copy link to ${title}`} href={`#${id}`}>
+            #
+          </a>
+        </div>
       </header>
       {children}
     </section>
@@ -253,7 +324,35 @@ export default function CC() {
   const [motionPaused, setMotionPaused] = useState(false);
   const [activeSection, setActiveSection] = useState('colors');
   const [buttonSignal, setButtonSignal] = useState(false);
+  const [additionalTokensOpen, setAdditionalTokensOpen] = useState(false);
+  const [searchSummary, setSearchSummary] = useState<{
+    items: number;
+    sections: number;
+  }>({
+    items: 0,
+    sections: sections.length,
+  });
   const normalizedQuery = query.trim().toLowerCase();
+  const activeSectionIndex = Math.max(
+    0,
+    sections.findIndex(([id]) => id === activeSection),
+  );
+  const additionalTokenSearchMatch = useMemo(() => {
+    if (!normalizedQuery) return false;
+    const styles = getComputedStyle(document.documentElement);
+    return additionalTokens.some(([name, label]) =>
+      `${name} ${label} ${styles.getPropertyValue(name).trim()}`
+        .toLowerCase()
+        .includes(normalizedQuery),
+    );
+  }, [normalizedQuery]);
+
+  useDocumentMetadata({
+    title: 'Arcade Blog Design System',
+    description:
+      'Interactive design-token and component catalogue for Uhanku technical blog posts.',
+    path: '/cc',
+  });
   const tokenCss = useMemo(() => {
     const styles = getComputedStyle(document.documentElement);
     const names = [...tokens, ...additionalTokens].map(([name]) => name);
@@ -281,28 +380,71 @@ export default function CC() {
   useEffect(() => {
     const catalogueSections =
       document.querySelectorAll<HTMLElement>('.cc-section');
+    const itemSelector = [
+      '.component-card',
+      '.cc-token-card',
+      '.cc-glitch-card',
+      '.callout',
+      '.blog-status-badge',
+      '.metric-card',
+      '.tldr-panel',
+      '.decision-column',
+      '.definition-card',
+      '.resource-card',
+      '.code-tabs',
+      '.diff-block',
+      '.file-tree',
+      '.test-report',
+      '.article-timeline',
+      '.reference-list',
+      '.series-nav',
+      '.cc-class-table tbody tr',
+    ].join(', ');
     let visibleSections = 0;
+    let visibleItems = 0;
+    let firstVisibleSection = '';
 
     catalogueSections.forEach((section) => {
-      const items = section.querySelectorAll<HTMLElement>(
-        '.component-card, .cc-token-card, .cc-glitch-card, .callout, .blog-status-badge, .metric-card',
+      const candidates = Array.from(
+        section.querySelectorAll<HTMLElement>(itemSelector),
       );
-      let visibleItems = 0;
+      const items = candidates.filter(
+        (item) =>
+          !candidates.some(
+            (candidate) => candidate !== item && candidate.contains(item),
+          ),
+      );
+      const sectionMatches =
+        !normalizedQuery ||
+        section.dataset.search?.toLowerCase().includes(normalizedQuery);
+      let matchingItems = 0;
 
       items.forEach((item) => {
         const visible =
           !normalizedQuery ||
+          Boolean(sectionMatches) ||
           item.textContent?.toLowerCase().includes(normalizedQuery);
         item.hidden = !visible;
-        if (visible) visibleItems += 1;
+        if (visible) matchingItems += 1;
       });
 
-      const sectionMatches =
-        !normalizedQuery ||
-        section.textContent?.toLowerCase().includes(normalizedQuery);
-      section.hidden = !sectionMatches && visibleItems === 0;
-      if (!section.hidden) visibleSections += 1;
+      const sectionVisible = Boolean(sectionMatches) || matchingItems > 0;
+      section.hidden = !sectionVisible;
+
+      if (sectionVisible) {
+        visibleSections += 1;
+        visibleItems += matchingItems;
+        firstVisibleSection ||= section.id;
+      }
     });
+
+    setSearchSummary({ items: visibleItems, sections: visibleSections });
+    if (normalizedQuery && firstVisibleSection) {
+      setActiveSection((current) => {
+        const currentSection = document.getElementById(current);
+        return currentSection?.hidden ? firstVisibleSection : current;
+      });
+    }
 
     document
       .querySelector('.cc-no-results')
@@ -328,6 +470,10 @@ export default function CC() {
 
   return (
     <div className={`cc-page${motionPaused ? ' motion-paused' : ''}`}>
+      <a className="cc-skip-link" href="#cc-content">
+        Skip to component catalogue
+      </a>
+      <ReadingUtilities />
       <header className="cc-header">
         <a className="cc-brand" href="#top">
           <span aria-hidden="true">U</span> UHANKU_OS
@@ -344,70 +490,138 @@ export default function CC() {
 
       <main id="top">
         <section className="cc-hero">
-          <div>
+          <div className="cc-hero__copy">
             <p className="cc-label">UHANKU_OS · BLOG UI PROTOCOL</p>
             <h1>
               Arcade blog <WordGlitch type="ghost">design system</WordGlitch>
             </h1>
             <p className="cc-hero__intro">
-              A standalone, copy-ready reference for every visual foundation and
-              reusable pattern intended for technical blog posts.
+              A living, copy-ready catalogue for the visual foundations and
+              React primitives used across Uhanku technical blog posts.
             </p>
+            <div
+              className="cc-hero__capabilities"
+              aria-label="Catalogue capabilities"
+            >
+              <span>LIVE COMPONENTS</span>
+              <span>COPY-READY</span>
+              <span>MDX MAPPED</span>
+            </div>
           </div>
           <aside className="cc-stats" aria-label="Design system summary">
-            <strong>{tokens.length + additionalTokens.length}</strong>
-            <span>documented tokens</span>
-            <strong>7</strong>
-            <span>post statuses</span>
-            <strong>20+</strong>
-            <span>post patterns</span>
-            <strong>0</strong>
-            <span>dependencies</span>
+            <div className="cc-stats__label">SYSTEM_CATALOGUE</div>
+            <div className="cc-stats__grid">
+              {catalogueStats.map((stat) => (
+                <div
+                  className={`cc-stat cc-stat--${stat.accent}`}
+                  key={stat.label}
+                >
+                  <strong>{stat.value}</strong>
+                  <span>{stat.label}</span>
+                </div>
+              ))}
+            </div>
           </aside>
         </section>
 
         <div className="cc-toolbar">
-          <label>
-            <span className="sr-only">Search the design system</span>
-            <input
-              id="cc-search"
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search tokens, classes, and components..."
+          <div className="cc-search">
+            <div className="cc-search__field">
+              <label className="sr-only" htmlFor="cc-search">
+                Search the design system
+              </label>
+              <Search
+                aria-hidden="true"
+                className="cc-search__icon"
+                size={16}
+                strokeWidth={1.8}
+              />
+              <input
+                id="cc-search"
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search tokens, classes, and components..."
+              />
+              {query ? (
+                <button
+                  aria-label="Clear design-system search"
+                  className="cc-search__clear"
+                  type="button"
+                  onClick={() => setQuery('')}
+                >
+                  <X aria-hidden="true" size={15} strokeWidth={2} />
+                </button>
+              ) : (
+                <kbd>/</kbd>
+              )}
+            </div>
+          </div>
+          <p className="cc-search-status" aria-live="polite">
+            {normalizedQuery
+              ? `${searchSummary.items} matches · ${searchSummary.sections} sections`
+              : `${sections.length} sections · 30+ patterns`}
+          </p>
+          <div className="cc-toolbar__actions">
+            <CopyButton
+              value={tokenCss}
+              label="Copy token CSS"
+              className="cc-copy--toolbar"
             />
-            <kbd>/</kbd>
-          </label>
-          <CopyButton
-            value={tokenCss}
-            label="Copy token CSS"
-            className="cc-copy--toolbar"
-          />
-          <button
-            type="button"
-            aria-pressed={motionPaused}
-            onClick={() => setMotionPaused((value) => !value)}
-          >
-            {motionPaused ? 'Resume motion' : 'Pause motion'}
-          </button>
+            <button
+              type="button"
+              aria-pressed={motionPaused}
+              onClick={() => setMotionPaused((value) => !value)}
+            >
+              {motionPaused ? 'Resume motion' : 'Pause motion'}
+            </button>
+          </div>
         </div>
 
         <div className="cc-layout">
           <aside className="cc-sidebar">
-            <p>SYSTEM MAP</p>
+            <div className="cc-sidebar__header">
+              <p>SYSTEM MAP</p>
+              <span>
+                {String(activeSectionIndex + 1).padStart(2, '0')} /{' '}
+                {String(sections.length).padStart(2, '0')}
+              </span>
+            </div>
+            <div className="cc-sidebar__progress" aria-hidden="true">
+              <span
+                style={{
+                  width: `${((activeSectionIndex + 1) / sections.length) * 100}%`,
+                }}
+              />
+            </div>
             <nav aria-label="Documentation sections">
-              {sections.map(([id, label]) => (
-                <a
-                  className={activeSection === id ? 'is-active' : ''}
-                  href={`#${id}`}
-                  key={id}
-                >
-                  {label}
-                </a>
+              {sectionGroups.map((group) => (
+                <div className="cc-nav-group" key={group.label}>
+                  <span>{group.label}</span>
+                  {group.ids.map((id) => {
+                    const section = sections.find(
+                      ([sectionId]) => sectionId === id,
+                    );
+                    if (!section) return null;
+                    const [, label] = section;
+                    return (
+                      <a
+                        aria-current={
+                          activeSection === id ? 'location' : undefined
+                        }
+                        className={activeSection === id ? 'is-active' : ''}
+                        href={`#${id}`}
+                        key={id}
+                      >
+                        {label}
+                      </a>
+                    );
+                  })}
+                </div>
               ))}
             </nav>
           </aside>
-          <div className="cc-main">
+          <div className="cc-main" id="cc-content" tabIndex={-1}>
             <div className="cc-no-results">
               No matching token or component was found. Press <kbd>Esc</kbd> to
               clear the search.
@@ -429,7 +643,15 @@ export default function CC() {
                   </p>
                   <TokenGrid />
                 </div>
-                <details className="cc-token-collapse">
+                <details
+                  className="cc-token-collapse"
+                  open={additionalTokensOpen || additionalTokenSearchMatch}
+                  onToggle={(event) => {
+                    if (!normalizedQuery) {
+                      setAdditionalTokensOpen(event.currentTarget.open);
+                    }
+                  }}
+                >
                   <summary>
                     <span>Additional colors and theme tokens</span>
                     <span>{additionalTokens.length} tokens</span>
@@ -583,30 +805,81 @@ export default function CC() {
                 className=".arcade-button · .blog-tags"
               >
                 <CodePreview>
-                  <div className="cc-button-row">
-                    <button
-                      className="cc-button cc-button--primary"
-                      type="button"
-                      onClick={() => {
-                        setButtonSignal(true);
-                        window.setTimeout(() => setButtonSignal(false), 900);
-                      }}
-                    >
-                      {buttonSignal ? 'Signal received' : 'Primary action'}
-                    </button>
-                    <button className="cc-button" type="button">
-                      Secondary
-                    </button>
-                    <button
-                      className="cc-button cc-button--danger"
-                      type="button"
-                    >
-                      Danger
-                    </button>
-                    <BlogTags
-                      ariaLabel="Article tags"
-                      tags={['AWS', 'CloudFront', 'React', 'Build log']}
-                    />
+                  <div className="cc-controls-showcase">
+                    <section className="cc-control-panel">
+                      <header className="cc-control-panel__header">
+                        <div>
+                          <span>ACTION_HIERARCHY</span>
+                          <p>Use one clear primary action per component.</p>
+                        </div>
+                        <small>04 variants</small>
+                      </header>
+                      <div className="cc-button-row">
+                        <button
+                          className="cc-button cc-button--primary"
+                          type="button"
+                          onClick={() => {
+                            setButtonSignal(true);
+                            window.setTimeout(
+                              () => setButtonSignal(false),
+                              900,
+                            );
+                          }}
+                        >
+                          <Zap aria-hidden="true" size={14} strokeWidth={2} />
+                          {buttonSignal ? 'Signal received' : 'Primary action'}
+                        </button>
+                        <button className="cc-button" type="button">
+                          <ArrowRight
+                            aria-hidden="true"
+                            size={14}
+                            strokeWidth={2}
+                          />
+                          Secondary
+                        </button>
+                        <button
+                          className="cc-button cc-button--ghost"
+                          type="button"
+                        >
+                          <ExternalLink
+                            aria-hidden="true"
+                            size={14}
+                            strokeWidth={2}
+                          />
+                          Ghost link
+                        </button>
+                        <button
+                          className="cc-button cc-button--danger"
+                          type="button"
+                        >
+                          <Trash2
+                            aria-hidden="true"
+                            size={14}
+                            strokeWidth={2}
+                          />
+                          Danger
+                        </button>
+                      </div>
+                    </section>
+
+                    <section className="cc-control-panel cc-control-panel--tags">
+                      <header className="cc-control-panel__header">
+                        <div>
+                          <span>ARTICLE_TAXONOMY</span>
+                          <p>Keep tags short, scannable, and content-specific.</p>
+                        </div>
+                        <small>04 tags</small>
+                      </header>
+                      <div className="cc-tag-surface">
+                        <BlogTags
+                          ariaLabel="Article tags"
+                          tags={['AWS', 'CloudFront', 'React', 'Build log']}
+                        />
+                      </div>
+                      <p className="cc-control-panel__hint">
+                        Recommended: 3–5 tags per article.
+                      </p>
+                    </section>
                   </div>
                 </CodePreview>
               </Section>
@@ -816,8 +1089,299 @@ export default function CC() {
             </div>
             <div>
               <Section
+                id="editorial-blocks"
+                index="09 / COMPONENTS"
+                title="Editorial blocks"
+                description="Help readers understand the result quickly, compare trade-offs, learn terminology, and continue into related material."
+                className=".tldr-panel · .pros-cons · .definition-card · .resource-card"
+              >
+                <div className="cc-stack">
+                  <ComponentCard
+                    title="Fast summary"
+                    label=".tldr-panel"
+                    codeSnippet={
+                      '<TldrPanel points={["Result", "Trade-off"]}>Summary text.</TldrPanel>'
+                    }
+                  >
+                    <CodePreview>
+                      <TldrPanel
+                        points={[
+                          'Hybrid retrieval improved recall without changing the authoring flow.',
+                          'Reranking stays optional because it adds measurable latency.',
+                          'Every answer keeps a visible route back to source evidence.',
+                        ]}
+                      >
+                        The selected architecture combines semantic and keyword
+                        retrieval, then exposes the supporting chunks beside the
+                        generated answer.
+                      </TldrPanel>
+                    </CodePreview>
+                  </ComponentCard>
+                  <ComponentCard
+                    title="Trade-off comparison"
+                    label=".pros-cons"
+                    codeSnippet={
+                      '<ProsCons pros={["Higher recall"]} cons={["More latency"]} />'
+                    }
+                  >
+                    <CodePreview>
+                      <ProsCons
+                        pros={[
+                          'Finds exact terms and semantically similar passages.',
+                          'Produces stronger evidence for technical questions.',
+                          'Keeps retrieval behavior explainable.',
+                        ]}
+                        cons={[
+                          'Requires two retrieval paths to maintain.',
+                          'Adds ranking and tuning decisions.',
+                          'Uses slightly more query time.',
+                        ]}
+                      />
+                    </CodePreview>
+                  </ComponentCard>
+                  <div className="feature-pair">
+                    <DefinitionCard label="TERM_01" term="Grounded answer">
+                      A generated response whose claims are supported by
+                      inspectable source passages returned by retrieval.
+                    </DefinitionCard>
+                    <ResourceCard
+                      description="Continue into the implementation and validation patterns used by the article."
+                      href="#technical-evidence"
+                      title="Presenting technical evidence"
+                    />
+                  </div>
+                </div>
+              </Section>
+            </div>
+            <div>
+              <Section
+                id="technical-evidence"
+                index="10 / COMPONENTS"
+                title="Technical evidence"
+                description="Publish alternate implementations, focused diffs, project structure, and validation output without flattening everything into prose."
+                className=".code-tabs · .diff-block · .file-tree · .test-report"
+              >
+                <div className="cc-stack">
+                  <ComponentCard
+                    title="Code tabs"
+                    label="Keyboard accessible"
+                    codeSnippet={
+                      '<CodeTabs tabs={[{ id: "ts", label: "TypeScript", code: "..." }]} />'
+                    }
+                  >
+                    <CodePreview>
+                      <CodeTabs
+                        ariaLabel="Retrieval implementation"
+                        tabs={[
+                          {
+                            id: 'typescript',
+                            label: 'TypeScript',
+                            language: 'typescript',
+                            code: `const matches = await retrieve({
+  query,
+  limit: 8,
+  strategy: 'hybrid',
+});`,
+                          },
+                          {
+                            id: 'sql',
+                            label: 'SQL',
+                            language: 'sql',
+                            code: `SELECT content, embedding <-> $1 AS distance
+FROM chunks
+ORDER BY distance
+LIMIT 8;`,
+                          },
+                          {
+                            id: 'shell',
+                            label: 'Shell',
+                            language: 'bash',
+                            code: `npm run typecheck
+npm run build`,
+                          },
+                        ]}
+                      />
+                    </CodePreview>
+                  </ComponentCard>
+                  <ComponentCard
+                    title="Focused diff"
+                    label=".diff-block"
+                    codeSnippet={
+                      '<DiffBlock file="retrieval.ts" lines={[{ type: "added", content: "..." }]} />'
+                    }
+                  >
+                    <CodePreview>
+                      <DiffBlock
+                        file="src/retrieval/hybrid.ts"
+                        lines={[
+                          {
+                            type: 'removed',
+                            content:
+                              'const matches = await vectorSearch(query);',
+                          },
+                          {
+                            type: 'added',
+                            content:
+                              'const semantic = await vectorSearch(query);',
+                          },
+                          {
+                            type: 'added',
+                            content:
+                              'const lexical = await keywordSearch(query);',
+                          },
+                          {
+                            type: 'added',
+                            content:
+                              'return reciprocalRankFusion(semantic, lexical);',
+                          },
+                        ]}
+                      />
+                    </CodePreview>
+                  </ComponentCard>
+                  <div className="feature-pair feature-pair--technical">
+                    <FileTree
+                      countLabel="5 files"
+                      items={[
+                        {
+                          name: 'src',
+                          type: 'folder',
+                          children: [
+                            {
+                              name: 'retrieval',
+                              type: 'folder',
+                              children: [
+                                { name: 'hybrid.ts' },
+                                { name: 'rerank.ts' },
+                              ],
+                            },
+                            { name: 'validation.ts' },
+                          ],
+                        },
+                        { name: 'README.md' },
+                      ]}
+                    />
+                    <TestReport
+                      duration="4.82s"
+                      items={[
+                        { label: 'Unit tests', result: '8 passed' },
+                        { label: 'Integration tests', result: '3 passed' },
+                        { label: 'Build verification', result: 'passed' },
+                      ]}
+                      summary="12 / 12 passed"
+                    />
+                  </div>
+                </div>
+              </Section>
+            </div>
+            <div>
+              <Section
+                id="reading-references"
+                index="11 / COMPONENTS"
+                title="Reading & references"
+                description="Support long technical articles with progress feedback, revision history, sources, and navigation between parts of a series."
+                className=".reading-progress · .article-timeline · .reference-list · .series-nav"
+              >
+                <div className="cc-stack">
+                  <ComponentCard
+                    title="Reading utilities"
+                    label="Live on this page"
+                    codeSnippet={'<ReadingUtilities />'}
+                  >
+                    <CodePreview>
+                      <div className="reading-utility-demo">
+                        <div>
+                          <span>ARTICLE_POSITION</span>
+                          <strong>Progress + return control</strong>
+                        </div>
+                        <p>
+                          The thin fixed line at the top of this page and the
+                          back-to-top button are provided by one reusable React
+                          component.
+                        </p>
+                      </div>
+                    </CodePreview>
+                  </ComponentCard>
+                  <ComponentCard
+                    title="Article changelog"
+                    label=".article-timeline"
+                    codeSnippet={
+                      '<ArticleTimeline items={[{ date: "2026-07-21", title: "Published" }]} />'
+                    }
+                  >
+                    <CodePreview>
+                      <ArticleTimeline
+                        items={[
+                          {
+                            date: '2026-07-21',
+                            title: 'Expanded component catalogue',
+                            description:
+                              'Added editorial, evidence, and reference patterns.',
+                          },
+                          {
+                            date: '2026-07-18',
+                            title: 'Validated examples',
+                            description:
+                              'Rechecked build output and reduced-motion behavior.',
+                          },
+                          {
+                            date: '2026-07-16',
+                            title: 'Initial field log',
+                            description:
+                              'Published architecture and implementation notes.',
+                          },
+                        ]}
+                      />
+                    </CodePreview>
+                  </ComponentCard>
+                  <ComponentCard
+                    title="References"
+                    label=".reference-list"
+                    codeSnippet={
+                      '<ReferenceList items={[{ href: "#", label: "Source" }]} />'
+                    }
+                  >
+                    <CodePreview>
+                      <ReferenceList
+                        items={[
+                          {
+                            description:
+                              'Shared semantic and Arcade color definitions used by the examples.',
+                            href: '#colors',
+                            label: 'Design-token source',
+                            returnHref: '#reading-references',
+                          },
+                          {
+                            description:
+                              'Code, diff, project-tree, and test-result presentation patterns.',
+                            href: '#technical-evidence',
+                            label: 'Validation evidence',
+                            returnHref: '#reading-references',
+                          },
+                        ]}
+                      />
+                    </CodePreview>
+                  </ComponentCard>
+                  <SeriesNav
+                    current={2}
+                    next={{
+                      href: '#technical-evidence',
+                      meta: 'Part 3 of 3',
+                      title: 'Validating the result',
+                    }}
+                    previous={{
+                      href: '#structure',
+                      meta: 'Part 1 of 3',
+                      title: 'Designing the pipeline',
+                    }}
+                    total={3}
+                  />
+                </div>
+              </Section>
+            </div>
+            <div>
+              <Section
                 id="word-glitches"
-                index="09 / EFFECTS"
+                index="12 / EFFECTS"
                 title="Word glitch types"
                 description="Six reusable treatments for short decorative emphasis. Glitched text is never required to understand the article."
                 className=".word-glitch · .word-glitch--*"
@@ -861,7 +1425,7 @@ export default function CC() {
             <div>
               <Section
                 id="effects"
-                index="10 / EFFECTS"
+                index="13 / EFFECTS"
                 title="Arcade effects"
                 description="Supporting visual treatments for separating article sections without introducing another bordered component."
                 className=".arcade-divider"
@@ -881,7 +1445,7 @@ export default function CC() {
             <div>
               <Section
                 id="class-reference"
-                index="11 / REFERENCE"
+                index="14 / REFERENCE"
                 title="Class reference"
                 description="Stable selectors intended for static HTML, MDX mappings, React components, and future component packs."
                 className="HTML · CSS · MDX"
@@ -999,6 +1563,101 @@ export default function CC() {
                       </tr>
                       <tr>
                         <td>
+                          <code>.tldr-panel</code>
+                        </td>
+                        <td>Fast article summary with key takeaways.</td>
+                        <td>aside</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <code>.pros-cons</code>
+                        </td>
+                        <td>Two-column benefits and costs comparison.</td>
+                        <td>div</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <code>.definition-card</code>
+                        </td>
+                        <td>Glossary term or compact concept explanation.</td>
+                        <td>aside</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <code>.resource-card</code>
+                        </td>
+                        <td>Internal or external related-resource preview.</td>
+                        <td>a</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <code>.code-tabs</code>
+                        </td>
+                        <td>Keyboard-accessible alternate code examples.</td>
+                        <td>div</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <code>.diff-block</code>
+                        </td>
+                        <td>Focused added, removed, and context lines.</td>
+                        <td>div</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <code>.file-tree</code>
+                        </td>
+                        <td>Project or directory structure.</td>
+                        <td>article</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <code>.test-report</code>
+                        </td>
+                        <td>Compact validation and test-run summary.</td>
+                        <td>article</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <code>.reading-progress</code>
+                        </td>
+                        <td>Fixed document-scroll progress indicator.</td>
+                        <td>div</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <code>.back-to-top</code>
+                        </td>
+                        <td>Long-article return control.</td>
+                        <td>button</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <code>.article-timeline</code>
+                        </td>
+                        <td>
+                          Article changelog, release history, or milestones.
+                        </td>
+                        <td>ol</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <code>.reference-list</code>
+                        </td>
+                        <td>Numbered sources, citations, or bibliography.</td>
+                        <td>ol</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <code>.series-nav</code>
+                        </td>
+                        <td>
+                          Previous and next navigation for article series.
+                        </td>
+                        <td>nav</td>
+                      </tr>
+                      <tr>
+                        <td>
                           <code>.arcade-divider</code>
                         </td>
                         <td>Article section separator.</td>
@@ -1030,7 +1689,8 @@ export default function CC() {
         </div>
       </main>
       <footer className="cc-footer">
-        UHANKU_OS · BLOG DESIGN SYSTEM · React component catalogue
+        <span>UHANKU_OS · BLOG DESIGN SYSTEM</span>
+        <span>Live React components · MDX ready · keyboard accessible</span>
       </footer>
     </div>
   );
