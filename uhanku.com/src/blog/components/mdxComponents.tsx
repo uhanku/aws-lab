@@ -9,6 +9,7 @@ import { ArcadeDivider } from './ArcadeEffects';
 import { ArcadeProgress, DataTable, MetricCard } from './DataDisplay';
 import { CheckList } from './CheckList';
 import { ComponentCard } from './ComponentCard';
+import { DraftCard } from './DraftCard';
 import { MediaFigure } from './MediaFigure';
 import { PostStatus } from './PostStatus';
 import { TerminalBlock } from './TerminalBlock';
@@ -65,6 +66,7 @@ export function createMdxComponents(onNavigate: Navigate) {
     ArcadeProgress,
     CheckList,
     ComponentCard,
+    DraftCard,
     DataTable,
     MediaFigure,
     MetricCard,

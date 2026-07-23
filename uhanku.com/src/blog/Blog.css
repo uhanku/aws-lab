@@ -236,6 +236,122 @@
   text-underline-offset: 4px;
 }
 
+/* Plain Markdown/MDX unordered lists only. Component lists keep their own CSS. */
+.blog-prose > ul:not([class]) {
+  display: grid;
+  gap: 0.9rem;
+  padding: 0;
+  margin: 1.65em 0;
+  list-style: none;
+}
+
+.blog-prose > ul:not([class]) li {
+  position: relative;
+  min-width: 0;
+  padding-left: 2rem;
+}
+
+.blog-prose > ul:not([class]) > li::before {
+  position: absolute;
+  top: calc(0.91em - 4px);
+  left: 0.35rem;
+  width: 8px;
+  height: 8px;
+  content: '';
+  border: 1px solid var(--arcade-cyan);
+  background: var(--arcade-cyan);
+  box-shadow: 3px 3px 0 rgba(99, 233, 255, 0.16);
+}
+
+.blog-prose > ul:not([class]) ul:not([class]) {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0;
+  margin: 0.8rem 0 0.15rem;
+  list-style: none;
+}
+
+.blog-prose > ul:not([class]) ul:not([class]) > li {
+  padding-left: 1.75rem;
+  color: color-mix(in srgb, var(--blog-text) 76%, transparent);
+  font-size: 0.96em;
+}
+
+.blog-prose > ul:not([class]) ul:not([class]) > li::before {
+  position: absolute;
+  top: calc(0.91em - 3px);
+  left: 0.35rem;
+  width: 6px;
+  height: 6px;
+  content: '';
+  border: 1px solid var(--arcade-acid);
+  background: transparent;
+  box-shadow: 2px 2px 0 rgba(216, 255, 101, 0.12);
+}
+
+.blog-prose
+  > ul:not([class])
+  ul:not([class])
+  ul:not([class])
+  > li::before {
+  width: 9px;
+  height: 1px;
+  border: 0;
+  background: var(--arcade-hot);
+  box-shadow: none;
+}
+
+.blog-prose > ul:not([class]) li > p + p {
+  margin-top: 0.7em;
+}
+
+.blog-prose > ul:not([class]) a {
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--blog-accent) 48%,
+    transparent
+  );
+  text-decoration-thickness: 1px;
+  transition:
+    color 140ms ease,
+    text-decoration-color 140ms ease;
+}
+
+.blog-prose > ul:not([class]) a:hover {
+  color: var(--arcade-acid);
+  text-decoration-color: currentColor;
+}
+
+.blog-prose > ul:not([class]) a:focus-visible {
+  border-radius: 2px;
+  outline: 1px solid var(--arcade-acid);
+  outline-offset: 3px;
+}
+
+@media (max-width: 650px) {
+  .blog-prose > ul:not([class]) {
+    gap: 0.78rem;
+    margin: 1.4em 0;
+  }
+
+  .blog-prose > ul:not([class]) li {
+    padding-left: 1.65rem;
+  }
+
+  .blog-prose > ul:not([class]) > li::before,
+  .blog-prose > ul:not([class]) ul:not([class]) > li::before {
+    left: 0.2rem;
+  }
+}
+
+@media (forced-colors: active) {
+  .blog-prose > ul:not([class]) li::before {
+    border-color: currentColor;
+    background: currentColor;
+    box-shadow: none;
+  }
+}
+
 .blog-prose img {
   display: block;
   max-width: 100%;

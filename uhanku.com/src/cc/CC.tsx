@@ -18,6 +18,7 @@ import { Callout } from '../blog/components/Callout';
 import { BlogTags } from '../blog/components/BlogTags';
 import { CheckList } from '../blog/components/CheckList';
 import { ComponentCard } from '../blog/components/ComponentCard';
+import { DraftCard } from '../blog/components/DraftCard';
 import { MediaFigure } from '../blog/components/MediaFigure';
 import { PostStatus } from '../blog/components/PostStatus';
 import { TerminalBlock } from '../blog/components/TerminalBlock';
@@ -1092,10 +1093,32 @@ export default function CC() {
                 id="editorial-blocks"
                 index="09 / COMPONENTS"
                 title="Editorial blocks"
-                description="Help readers understand the result quickly, compare trade-offs, learn terminology, and continue into related material."
-                className=".tldr-panel · .pros-cons · .definition-card · .resource-card"
+                description="Mark unfinished thinking clearly, summarize results, compare trade-offs, explain terminology, and continue into related material."
+                className=".draft-card · .tldr-panel · .pros-cons · .definition-card · .resource-card"
               >
                 <div className="cc-stack">
+                  <ComponentCard
+                    title="Working draft"
+                    label=".draft-card"
+                    codeSnippet={
+                      '<DraftCard title="Open question">Draft text that may change.</DraftCard>'
+                    }
+                  >
+                    <CodePreview>
+                      <DraftCard title="Why I am publishing this early">
+                        <p>
+                          This section captures the current direction before the
+                          implementation is final. The core idea is stable, but
+                          the examples and conclusions may still change as I test
+                          the edge cases.
+                        </p>
+                        <p>
+                          Publishing it now keeps the reasoning visible instead of
+                          pretending the work arrived fully formed.
+                        </p>
+                      </DraftCard>
+                    </CodePreview>
+                  </ComponentCard>
                   <ComponentCard
                     title="Fast summary"
                     label=".tldr-panel"
@@ -1560,6 +1583,13 @@ npm run build`,
                         </td>
                         <td>Accessible image or diagram with caption.</td>
                         <td>figure</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <code>.draft-card</code>
+                        </td>
+                        <td>Visible working copy or unfinished article section.</td>
+                        <td>aside</td>
                       </tr>
                       <tr>
                         <td>
